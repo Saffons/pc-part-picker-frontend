@@ -10,7 +10,7 @@ function Navbar() {
     return <div className="navbar">
         <Stack direction="row" spacing={4}>
             <Logo src={logo} onClick={() => navigate("/")}></Logo>
-            <NavButton variant="contained" onClick={() => navigate("/")}>Home</NavButton>
+            <NavButton variant="contained" onClick={() => navigate("/")}>Strona główna</NavButton>
             <NavButton variant="contained" onClick={() => navigate("/parts")}>Części komputerowe</NavButton>
             <NavButton variant="contained" onClick={() => navigate("/account")}>Moje konto</NavButton>
         </Stack>
@@ -19,8 +19,9 @@ function Navbar() {
 
 const NavButton = styled(Button)({
     width: 200,
-    height: 53,
+    height: 38,
     color: "white",
+    backgroundColor: "rgb(195, 130, 250)",
     marginBottom: "1rem",
     marginTop: "1rem !important"
 })
@@ -28,9 +29,9 @@ const NavButton = styled(Button)({
 const Logo = styled('img')({
     width: 50,
     height: 50,
-    marginBottom: "1rem",
-    marginTop: "1rem",
-    border: "3px solid black",
+    marginTop: "0.5rem !important",
+    marginBottom: "0.5rem !important",
+    border: "2px solid black",
     cursor: "pointer"
 })
 

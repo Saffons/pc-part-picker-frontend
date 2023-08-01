@@ -1,46 +1,67 @@
-import PartsTable from "./PartsTable";
+import styled from "@mui/styled-engine";
+import {
+    ButtonColumns,
+    commonColumns,
+    CPUColumns,
+    GPUColumns,
+    MemoryColumns,
+    MotherboardColumns,
+    StorageColumns
+} from "./utils";
+import './style.css';
+import {DataGrid} from "@mui/x-data-grid";
+import {fetchAndStoreDataInMap, partsTypes} from "../../fetch/fetch";
+import {useEffect, useRef, useState} from "react";
 
-import {commonColumns, CPUColumns, GPUColumns, MemoryColumns, MotherboardColumns, StorageColumns} from "./utils";
 
 function createColumns() {
-    const array = [{name: "Procesory", columns: CPUColumns},
-        {name: "Karty graficzne", columns: GPUColumns},
-        {name: "Pamięci RAM", columns: MemoryColumns},
-        {name: "Płyty główne", columns: MotherboardColumns},
-        {name: "Dyski", columns: StorageColumns},
-    ]
+    const array = [
+        {id: "cpu", name: "Procesory", columns: CPUColumns},
+        {id: "gpu", name: "Karty graficzne", columns: GPUColumns},
+        {id: "memory", name: "Pamięci RAM", columns: MemoryColumns},
+        {id: "motherboard", name: "Płyty główne", columns: MotherboardColumns},
+        {id: "storage", name: "Dyski", columns: StorageColumns},
+    ];
     const arr = [];
-    array.forEach(obj =>  {
-        arr.push({name: obj.name, columns: commonColumns.concat(obj.columns)});
+    array.forEach(obj => {
+        arr.push({id: obj.id, name: obj.name, columns: commonColumns.concat(obj.columns.concat(ButtonColumns))});
     })
     return arr;
 }
 
-function renderTables(array) {
-    const rows = [
-        { id: 1, col1: 'Hello', col2: 'World', col3: 'e', col4: 'a', col5: 'f'  },
-        { id: 2, col1: 'DataGridPro', col2: 'is Awesome' },
-        { id: 3, col1: 'MUI', col2: 'is Amazing' },
-    ];
+function renderTables(array, data) {
     return array.map((col, index) => {
-        console.log(col);
         return <div>
             <h3>{col.name}</h3>
-            <PartsTable rows={rows} columns={col.columns} />
+            <PartsDataGrid rows={data.get(col.id)} columns={col.columns}/>
         </div>
     })
 }
 
 function Parts() {
-    // useEffect(() => {
-    //
-    // }}
+    let partsData = useRef(new Map());
+    const [loading, setLoading] = useState(true);
+    useEffect(() => {
+        fetchAndStoreDataInMap(partsTypes)
+            .then((resultMap) => {
+                partsData.current = resultMap;
+                setLoading(false);
+            })
+            .catch((error) => {
+                console.error("Error:", error);
+            });
+    });
 
     const tables = createColumns();
     return <div>
         <h2>Lista części dostępnych w sklepie X</h2>
-        { renderTables(tables) }
+        {!loading && renderTables(tables, partsData.current)}
     </div>
 }
+
+const PartsDataGrid = styled(DataGrid)({
+    background: 'rgba(255, 255, 255, 0.65)',
+    borderRadius: '15px',
+})
 
 export default Parts;
