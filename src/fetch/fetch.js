@@ -1,11 +1,11 @@
-import {API_PARTS_URL} from "./utils";
+import {API_PARTS_URL, API_URL} from "./utils";
 
-export const partsTypes = ["cpu", "gpu", "memory", "motherboard", "storage"];
-
+export const partsTypes = ["parts/cpu", "parts/gpu", "parts/memory", "parts/motherboard", "parts/storage"];
 
 async function fetchDataFromEndpoint(endpoint) {
     try {
-        const response = await fetch(API_PARTS_URL + endpoint);
+        const response = await fetch(API_URL + endpoint);
+        console.log(API_URL + endpoint);
         if (!response.ok) {
             throw new Error(`Network response was not ok: ${response.status}`);
         }
@@ -13,6 +13,25 @@ async function fetchDataFromEndpoint(endpoint) {
     } catch (error) {
         console.error(`Error fetching data from ${endpoint}: ${error.message}`);
         throw error;
+    }
+}
+
+export async function postJsonDataToEndpoint(endpoint, data) {
+    try {
+        const response = await fetch(API_URL + endpoint, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                // 'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: JSON.stringify(data)
+        });
+        if (response.ok) {
+            const json = await response.json();
+            console.log(json);
+        }
+    } catch (err) {
+        console.error(err);
     }
 }
 

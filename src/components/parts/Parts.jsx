@@ -8,7 +8,7 @@ import {
     MotherboardColumns,
     StorageColumns
 } from "./utils";
-import './style.css';
+import './style.scss';
 import {DataGrid} from "@mui/x-data-grid";
 import {fetchAndStoreDataInMap, partsTypes} from "../../fetch/fetch";
 import {useEffect, useRef, useState} from "react";
@@ -32,8 +32,12 @@ function createColumns() {
 function renderTables(array, data) {
     return array.map((col, index) => {
         return <div>
-            <h3>{col.name}</h3>
-            <PartsDataGrid rows={data.get(col.id)} columns={col.columns}/>
+            <h3 className={'h3-lista'}>{col.name}</h3>
+            <PartsDataGrid rows={data.get(col.id)} columns={col.columns} sx={{
+                boxShadow: 2,
+                border: 2,
+                borderColor: 'primary.light'
+            }}/>
         </div>
     })
 }
@@ -53,14 +57,14 @@ function Parts() {
     });
 
     const tables = createColumns();
-    return <div>
-        <h2>Lista części dostępnych w sklepie X</h2>
+    return <div className={'lista'}>
+        <h2 className={'h2-lista'}>Lista części dostępnych w sklepie X</h2>
         {!loading && renderTables(tables, partsData.current)}
     </div>
 }
 
 const PartsDataGrid = styled(DataGrid)({
-    background: 'rgba(255, 255, 255, 0.65)',
+    background: 'rgba(255, 255, 255, 0.80)',
     borderRadius: '15px',
 })
 

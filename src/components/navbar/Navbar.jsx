@@ -3,16 +3,22 @@ import styled from "@mui/styled-engine";
 import logo from "../../images/x.png";
 import "./style.css";
 import {useNavigate} from "react-router-dom";
+import {useContext, useState} from "react";
 
 
 function Navbar() {
     const navigate = useNavigate();
+    // const logged = useContext();
+    const [logged, setLogged] = useState(false);
+    const [isAdmin, setIsAdmin] = useState(false);
     return <div className="navbar">
         <Stack direction="row" spacing={4}>
             <Logo src={logo} onClick={() => navigate("/")}></Logo>
             <NavButton variant="contained" onClick={() => navigate("/")}>Strona główna</NavButton>
             <NavButton variant="contained" onClick={() => navigate("/parts")}>Części komputerowe</NavButton>
-            <NavButton variant="contained" onClick={() => navigate("/account")}>Moje konto</NavButton>
+            { logged && <NavButton variant="contained" onClick={() => navigate("/account")}>Moje konto</NavButton> }
+            { !logged && <NavButton variant="contained" onClick={() => navigate("/login")}>Zaloguj się</NavButton> }
+            { isAdmin && <NavButton variant="contained" onClick={() => navigate("/admin")}>Panel admina</NavButton> }
         </Stack>
     </div>
 }
