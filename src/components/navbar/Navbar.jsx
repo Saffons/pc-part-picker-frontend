@@ -3,21 +3,28 @@ import styled from "@mui/styled-engine";
 import logo from "../../images/x.png";
 import "./style.css";
 import {useNavigate} from "react-router-dom";
-import {useContext, useState} from "react";
-
+import {useAuth} from "../../contexts/AuthContext";
+import {useEffect} from "react";
+import jwt_decode from "jwt-decode";
 
 function Navbar() {
     const navigate = useNavigate();
-    // const logged = useContext();
-    const [logged, setLogged] = useState(false);
-    const [isAdmin, setIsAdmin] = useState(false);
+    const {isLoggedIn, setIsLoggedIn, isAdmin, setIsAdmin} = useAuth();
+
+    useEffect(() => {
+        setIsLoggedIn(localStorage.getItem("jwt") !== undefined);
+        let decoded = jwt_decode(localStorage.getItem("jwt"));
+        setIsAdmin(decoded["sub"] === "admin")
+    }, [])
+
     return <div className="navbar">
         <Stack direction="row" spacing={4}>
             <Logo src={logo} onClick={() => navigate("/")}></Logo>
             <NavButton variant="contained" onClick={() => navigate("/")}>Strona główna</NavButton>
             <NavButton variant="contained" onClick={() => navigate("/parts")}>Części komputerowe</NavButton>
-            { logged && <NavButton variant="contained" onClick={() => navigate("/account")}>Moje konto</NavButton> }
-            { !logged && <NavButton variant="contained" onClick={() => navigate("/login")}>Zaloguj się</NavButton> }
+            { isLoggedIn && <NavButton variant="contained" onClick={() => navigate("/account")}>Moje konto</NavButton> }
+            { isLoggedIn && <NavButton variant="contained" onClick={() => navigate("/logout")}>Wyloguj się</NavButton> }
+            { !isLoggedIn && <NavButton variant="contained" onClick={() => navigate("/login")}>Zaloguj się</NavButton> }
             { isAdmin && <NavButton variant="contained" onClick={() => navigate("/admin")}>Panel admina</NavButton> }
         </Stack>
     </div>

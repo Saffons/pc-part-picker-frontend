@@ -12,7 +12,7 @@ import './style.scss';
 import {DataGrid} from "@mui/x-data-grid";
 import {fetchAndStoreDataInMap, partsTypes} from "../../fetch/fetch";
 import {useEffect, useRef, useState} from "react";
-
+import {useAuth} from "../../contexts/AuthContext";
 
 function createColumns() {
     const array = [
@@ -33,7 +33,7 @@ function renderTables(array, data) {
     return array.map((col, index) => {
         return <div>
             <h3 className={'h3-lista'}>{col.name}</h3>
-            <PartsDataGrid rows={data.get(col.id)} columns={col.columns} sx={{
+            <PartsDataGrid key={data.get(col.id)} rows={data.get(col.id)} columns={col.columns} sx={{
                 boxShadow: 2,
                 border: 2,
                 borderColor: 'primary.light'
@@ -45,21 +45,27 @@ function renderTables(array, data) {
 function Parts() {
     let partsData = useRef(new Map());
     const [loading, setLoading] = useState(true);
+    const {isLoggedIn, isAdmin} = useAuth();
     useEffect(() => {
-        fetchAndStoreDataInMap(partsTypes)
-            .then((resultMap) => {
-                partsData.current = resultMap;
-                setLoading(false);
-            })
-            .catch((error) => {
-                console.error("Error:", error);
-            });
+        if (isLoggedIn) {
+            fetchAndStoreDataInMap(partsTypes)
+                .then((resultMap) => {
+                    partsData.current = resultMap;
+                    setLoading(false);
+                })
+                .catch((error) => {
+                    console.error("Error:", error);
+                });
+        }
     });
 
     const tables = createColumns();
     return <div className={'lista'}>
         <h2 className={'h2-lista'}>Lista części dostępnych w sklepie X</h2>
-        {!loading && renderTables(tables, partsData.current)}
+        {isLoggedIn ? (!loading && renderTables(tables, partsData.current))
+            :
+            <div className={"error"}><p>Nie można załadować listy części - proszę się zalogować</p></div>
+        }
     </div>
 }
 

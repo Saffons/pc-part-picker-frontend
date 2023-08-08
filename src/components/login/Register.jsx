@@ -3,135 +3,161 @@ import {ImportContacts} from "@mui/icons-material";
 import {Button, Divider, Stack} from "@mui/material";
 import './style.scss';
 import {postJsonDataToEndpoint} from "../../fetch/fetch";
-import { Formik, Form, Field, ErrorMessage } from 'formik';
+import {Formik, Form, Field, ErrorMessage} from "formik";
+import * as Yup from "yup";
+import {useNavigate} from "react-router-dom";
 
-// function isValidEmail(email) {
-//     return /\S+@\S+\.\S+/.test(email);
-// }
+const signUpSchema = Yup.object().shape({
+    email: Yup.string().email()
+        .required("Email wymagany"),
 
-// const Basic = () => (
-//     <div>
-//         <h1>Any place in your app!</h1>
-//         <Formik
-//             initialValues={{ firstName: '', lastName: '', email: '', login: '', password: '' }}
-//             validate={values => {
-//                 const errors = {};
-//                 if (!values.email) {
-//                     errors.email = 'Required';
-//                 } else if (
-//                     !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
-//                 ) {
-//                     errors.email = 'Invalid email address';
-//                 }
-//                 return errors;
-//             }}
-//             onSubmit={(values, { setSubmitting }) => {
-//                 setTimeout(() => {
-//                     alert(JSON.stringify(values, null, 2));
-//                     setSubmitting(false);
-//                 }, 400);
-//             }}
-//         >
-//             {({ isSubmitting }) => (
-//                 <Form>
-//                     <Field type="email" name="email" />
-//                     <ErrorMessage name="email" component="div" />
-//                     <Field type="password" name="password" />
-//                     <ErrorMessage name="password" component="div" />
-//                     <button type="submit" disabled={isSubmitting}>
-//                         Submit
-//                     </button>
-//                 </Form>
-//             )}
-//         </Formik>
-//     </div>
-// );
+    firstName: Yup.string()
+        .required("Imię wymagane")
+        .min(3, "Imię musi mieć przynajmniej 3 znaki")
+        .max(20, "Imię musi mieć maksymalnie 20 znaków"),
 
-function Register() {
-    const [login, setLogin] = useState('');
-    const [password, setPassword] = useState('');
-    const [firstName, setFirstName] = useState('');
-    const [lastName, setLastName] = useState('');
-    const [email, setEmail] = useState('');
+    lastName: Yup.string()
+        .required("Nazwisko wymagane")
+        .min(3, "Nazwisko musi mieć przynajmniej 3 znaki")
+        .max(20, "Nazwisko może mieć maksymalnie 20 znaków"),
 
+    login: Yup.string()
+        .required("Login wymagany")
+        .min(3, "Login musi mieć przynajmniej 3 znaki")
+        .max(20, "Login może mieć maksymalnie 20 znaków"),
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        console.log(login, password, firstName, lastName, email);
+    password: Yup.string()
+        .required("Hasło wymagane")
+        .min(3, "Hasło musi mieć przynajmniej 3 znaki")
+        .max(20, "Hasło może mieć maksymalnie 20 znaków")
+})
 
-        if (!isValidEmail(email)) {
-            return;
-        }
+const Register = () => {
+    const navigate = useNavigate();
+    const [registerSuccessful, setRegisterSuccessful] = useState(false);
+    const [registerFailed, setRegisterFailed] = useState(false);
+    const initialValues = {
+        login: "",
+        password: "",
+        firstName: "",
+        lastName: "",
+        email: ""
+    }
 
+    const handleSubmit = (values) => {
         let account = {
-            login: login,
-            password: password,
-            firstName: firstName,
-            lastName: lastName,
-            email: email
+            login: values.login,
+            password: values.password,
+            firstName: values.firstName,
+            lastName: values.lastName,
+            email: values.email
         };
-        const response = await postJsonDataToEndpoint("auth/account", account);
-        console.log(account);
-        console.log(response);
-        //TODO: HIT ENDPOINT
+        postJsonDataToEndpoint("auth/account", account)
+            .then(() => {
+                setRegisterSuccessful(true);
+                setTimeout(() => {
+                    navigate("/login");
+                }, 5000);
+            })
+            .catch(() => {
+                setRegisterFailed(true);
+                setTimeout(() => {
+                    navigate("/register");
+                }, 5000);
+            });
     }
 
     return (
-        <div>
-            <form className='form' onSubmit={handleSubmit}>
-                <div className='form-control'>
-                    <Stack
-                        direction={"column"}
-                        divider={<Divider orientation="horizontal" flexItem/>}
-                        spacing={2}
-                    >
-                        <label htmlFor='firstName'>First name: </label>
-                        <input
-                            type='text'
-                            id='firstName'
-                            name='firstName'
-                            value={firstName}
-                            onChange={(e) => setFirstName(e.target.value)}
-                        />
-                        <label htmlFor='lastName'>Last name: </label>
-                        <input
-                            type='text'
-                            id='lastName'
-                            name='lastName'
-                            value={lastName}
-                            onChange={(e) => setLastName(e.target.value)}
-                        />
-                        <label htmlFor='email'>E-mail: </label>
-                        <input
-                            type='email'
-                            id='email'
-                            name='email'
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                        />
-                        <label htmlFor='login'>Login: </label>
-                        <input
-                            type='text'
-                            id='login'
-                            name='login'
-                            value={login}
-                            onChange={(e) => setLogin(e.target.value)}
-                        />
-                        <label htmlFor='password'>Password: </label>
-                        <input
-                            type='password'
-                            id='password'
-                            name='password'
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                        />
-                    </Stack>
-                </div>
-                <Button variant="contained" size="medium" startIcon={<ImportContacts/>} type={"submit"} sx={{margin: "1rem"}}>REGISTER</Button>
-                <h3>Want to login?</h3><p>Click <a href={"/login"}>here</a> to login</p>
-            </form>
-        </div>
+        <Formik
+            initialValues={initialValues}
+            validationSchema={signUpSchema}
+            onSubmit={(values) => {
+                handleSubmit(values);
+            }}
+        >
+            {(formik) => {
+                const {errors, touched} = formik;
+                return ((!registerSuccessful && !registerFailed) ?
+                    (<div>
+                        <div className="form-control">
+                            <Form>
+                                <Stack
+                                    direction={"column"}
+                                    divider={<Divider orientation={"horizontal"} flexItem/>}
+                                    spacing={2}
+                                >
+                                    <label htmlFor="firstName">First name: </label>
+                                    <Field
+                                        type="text"
+                                        name="firstName"
+                                        id="firstName"
+                                        className={errors.firstName && touched.firstName ?
+                                            "input-error" : null}
+                                    />
+                                    <ErrorMessage name="firstName" component="span" className="error"/>
+
+                                    <label htmlFor="lastName">Last name: </label>
+                                    <Field
+                                        type="text"
+                                        name="lastName"
+                                        id="lastName"
+                                        className={errors.lastName && touched.lastName ?
+                                            "input-error" : null}
+                                    />
+                                    <ErrorMessage name="lastName" component="span" className="error"/>
+
+                                    <label htmlFor="email">E-mail: </label>
+                                    <Field
+                                        type="email"
+                                        name="email"
+                                        id="email"
+                                        className={errors.email && touched.email ?
+                                            "input-error" : null}
+                                    />
+                                    <ErrorMessage name="email" component="span" className="error"/>
+
+                                    <label htmlFor="login">Login: </label>
+                                    <Field
+                                        type="login"
+                                        name="login"
+                                        id="login"
+                                        className={errors.login && touched.login ?
+                                            "input-error" : null}
+                                    />
+                                    <ErrorMessage name="login" component="span" className="error"/>
+
+                                    <label htmlFor="password">Password: </label>
+                                    <Field
+                                        type="password"
+                                        name="password"
+                                        id="password"
+                                        className={errors.password && touched.password ?
+                                            "input-error" : null}
+                                    />
+                                    <ErrorMessage name="password" component="span" className="error"/>
+
+                                </Stack>
+
+
+                                <Button variant="contained" size="medium" startIcon={<ImportContacts/>} type={"submit"}
+                                        sx={{margin: "1rem"}}>REGISTER</Button>
+
+                            </Form>
+                        </div>
+
+                        <h3>Want to login?</h3>
+                        <p>Click <a href={"/login"}>here</a> to login</p>
+                    </div>
+                    ) :
+                (<div>
+                    { registerSuccessful && <h2>Pomyślnie stworzono konto</h2> }
+                    { registerFailed && <h2>Nie udało się stworzyć konta</h2> }>
+                </div>)
+                )
+
+            }}
+        </Formik>
     );
-}
+};
 
 export default Register;
