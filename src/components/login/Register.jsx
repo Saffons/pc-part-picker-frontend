@@ -5,7 +5,6 @@ import './style.scss';
 import {postJsonDataToEndpoint} from "../../fetch/fetch";
 import {Formik, Form, Field, ErrorMessage} from "formik";
 import * as Yup from "yup";
-import {useNavigate} from "react-router-dom";
 
 const signUpSchema = Yup.object().shape({
     email: Yup.string().email()
@@ -33,7 +32,6 @@ const signUpSchema = Yup.object().shape({
 })
 
 const Register = () => {
-    const navigate = useNavigate();
     const [registerSuccessful, setRegisterSuccessful] = useState(false);
     const [registerFailed, setRegisterFailed] = useState(false);
     const initialValues = {
@@ -55,15 +53,9 @@ const Register = () => {
         postJsonDataToEndpoint("auth/account", account)
             .then(() => {
                 setRegisterSuccessful(true);
-                setTimeout(() => {
-                    navigate("/login");
-                }, 5000);
             })
             .catch(() => {
                 setRegisterFailed(true);
-                setTimeout(() => {
-                    navigate("/register");
-                }, 5000);
             });
     }
 
@@ -82,8 +74,8 @@ const Register = () => {
                         <div className="form-control">
                             <Form>
                                 <Stack
-                                    direction={"column"}
-                                    divider={<Divider orientation={"horizontal"} flexItem/>}
+                                    direction="column"
+                                    divider={<Divider orientation="horizontal" flexItem/>}
                                     spacing={2}
                                 >
                                     <label htmlFor="firstName">First name: </label>
@@ -139,14 +131,14 @@ const Register = () => {
                                 </Stack>
 
 
-                                <Button variant="contained" size="medium" startIcon={<ImportContacts/>} type={"submit"}
+                                <Button variant="contained" size="medium" startIcon={<ImportContacts/>} type="submit"
                                         sx={{margin: "1rem"}}>REGISTER</Button>
 
                             </Form>
                         </div>
 
                         <h3>Want to login?</h3>
-                        <p>Click <a href={"/login"}>here</a> to login</p>
+                        <p>Click <a href="/login">here</a> to login</p>
                     </div>
                     ) :
                 (<div>

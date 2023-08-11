@@ -5,7 +5,6 @@ import './style.scss';
 import {postToken} from "../../fetch/fetch";
 import {Formik, Form, Field, ErrorMessage} from "formik";
 import * as Yup from "yup";
-import {useNavigate} from "react-router-dom";
 import {useAuth} from "../../contexts/AuthContext";
 import jwt_decode from "jwt-decode";
 
@@ -22,10 +21,9 @@ const signInSchema = Yup.object().shape({
 })
 
 const Login = (props) => {
-    const navigate = useNavigate();
     const [loginSuccessful, setLoginSuccessful] = useState(false);
     const [loginFailed, setLoginFailed] = useState(false);
-    const {isLoggedIn, setIsLoggedIn, isAdmin, setIsAdmin} = useAuth();
+    const {setIsLoggedIn, setIsAdmin, setLogin} = useAuth();
     const initialValues = {
         login: "",
         password: "",
@@ -34,17 +32,25 @@ const Login = (props) => {
         let credentials = {
             login: values.login,
             password: values.password,
-        };
+        }
+
         postToken(credentials)
-            .then(() => {
-                setLoginSuccessful(true);
-                setIsLoggedIn(true);
-                let decoded = jwt_decode(localStorage.getItem("jwt"));
-                setIsAdmin(decoded["sub"] === "admin")
+            .then((res) => {
+                if (res && localStorage.getItem("jwt")) {
+                    setLoginSuccessful(true);
+                    setIsLoggedIn(true);
+                    let decoded = jwt_decode(localStorage.getItem("jwt"));
+                    setIsAdmin(decoded["scope"] === "ROLE_ADMIN");
+                    setLogin(decoded["sub"]);
+                }
             })
-            .catch(() => {
+            .catch((err) => {
                 setLoginFailed(true);
+                setIsLoggedIn(false);
+                setIsAdmin(false);
+                setLogin("");
             });
+
     }
 
     return (
@@ -62,8 +68,8 @@ const Login = (props) => {
                                 <div className="form-control">
                                     <Form>
                                         <Stack
-                                            direction={"column"}
-                                            divider={<Divider orientation={"horizontal"} flexItem/>}
+                                            direction="column"
+                                            divider={<Divider orientation="horizontal" flexItem/>}
                                             spacing={2}
                                         >
 
@@ -91,22 +97,21 @@ const Login = (props) => {
 
 
                                         <Button variant="contained" size="medium" startIcon={<ImportContacts/>}
-                                                type={"submit"}
+                                                type="submit"
                                                 sx={{margin: "1rem"}}>LOGIN</Button>
 
                                     </Form>
                                 </div>
 
                                 <h3>Don't have an account yet?</h3>
-                                <p>Click <a href={"/register"}>here</a> to sign up</p>
+                                <p>Click <a href="/register">here</a> to sign up</p>
                             </div>
                         ) :
-                        (<div>
+                        (<div className="panel">
                             {loginSuccessful && <h2>Pomyślnie zalogowano</h2>}
-                            {loginFailed && <h2>Nie udało się zalogować</h2>}>
+                            {loginFailed && <h2>Nie udało się zalogować</h2>}
                         </div>)
                 )
-
             }}
         </Formik>
     );

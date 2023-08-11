@@ -9,12 +9,17 @@ import jwt_decode from "jwt-decode";
 
 function Navbar() {
     const navigate = useNavigate();
-    const {isLoggedIn, setIsLoggedIn, isAdmin, setIsAdmin} = useAuth();
+    const {isLoggedIn, setIsLoggedIn, isAdmin, setIsAdmin, setLogin} = useAuth();
 
     useEffect(() => {
-        setIsLoggedIn(localStorage.getItem("jwt") !== undefined);
-        let decoded = jwt_decode(localStorage.getItem("jwt"));
-        setIsAdmin(decoded["sub"] === "admin")
+        setIsLoggedIn(localStorage.getItem("jwt") !== null);
+        try {
+            let decoded = jwt_decode(localStorage.getItem("jwt"));
+            setIsAdmin(decoded["scope"] === "ROLE_ADMIN")
+            setLogin(decoded["sub"]);
+        } catch(e) {
+
+        }
     }, [])
 
     return <div className="navbar">
@@ -30,7 +35,7 @@ function Navbar() {
     </div>
 }
 
-const NavButton = styled(Button)({
+export const NavButton = styled(Button)({
     width: 200,
     height: 38,
     color: "white",

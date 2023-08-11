@@ -1,6 +1,4 @@
-import {Button, Stack} from "@mui/material";
 import React from "react";
-import {ImportContacts} from "@mui/icons-material";
 
 export const commonColumns = [
     {field: 'name', headerName: 'Nazwa', width: 200, headerClassName: 'super-app-theme--header-first', headerAlign: 'center'},
@@ -36,18 +34,4 @@ export const StorageColumns = [
     {field: 'm2', headerName: 'Dysk M2', width: 150, headerClassName: 'super-app-theme--header', headerAlign: 'center'},
     {field: 'capacity', headerName: 'Pojemność', width: 150, headerClassName: 'super-app-theme--header', headerAlign: 'center'},
     {field: 'speed', headerName: 'Prędkość odczytu', width: 150, headerClassName: 'super-app-theme--header-last', headerAlign: 'center'},
-]
-
-export const ButtonColumns = [
-    {
-        field: 'select', headerName: '', width: 125, renderCell: () => (
-            <Stack spacing={1} sx={{width: 1, py: 1}}>
-                <React.Fragment>
-                    <Button variant="outlined" size="small" startIcon={<ImportContacts/>}>
-                        Edit
-                    </Button>
-                </React.Fragment>
-            </Stack>
-        ),
-    }
 ]

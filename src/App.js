@@ -10,13 +10,17 @@ import Footer from "./components/footer/Footer";
 import Account from "./components/account/Account";
 import AdminPanel from "./components/admin-panel/AdminPanel";
 import {AuthProvider} from "./contexts/AuthContext";
+import NewCpu from "./components/admin-panel/NewCpu";
 
 function App() {
     return (
         <div className="App">
             <AuthProvider>
                 <BrowserRouter>
-                    <Navbar/>
+                    <body>
+                    <header>
+                        <Navbar/>
+                    </header>
                     <Routes>
                         <Route path="/" element={<Home/>}></Route>
                         <Route path="/parts" element={<Parts/>}></Route>
@@ -25,8 +29,16 @@ function App() {
                         <Route path="/register" element={<Register/>}></Route>
                         <Route path="/account" element={<Account/>}></Route>
                         <Route path="/admin" element={<AdminPanel/>}></Route>
+                        <Route path="/admin/newCpu" element={<NewCpu/>}></Route>
+                        <Route path="/admin/newGpu" element={<NewCpu/>}></Route>
+                        <Route path="/admin/newMemory" element={<NewCpu/>}></Route>
+                        <Route path="/admin/newMotherboard" element={<NewCpu/>}></Route>
+                        <Route path="/admin/newStorage" element={<NewCpu/>}></Route>
                     </Routes>
-                    <Footer/>
+                    <footer>
+                        <Footer/>
+                    </footer>
+                    </body>
                 </BrowserRouter>
             </AuthProvider>
         </div>

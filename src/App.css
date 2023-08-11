@@ -10,3 +10,37 @@
   background-position: center;
   background-repeat: no-repeat;
 }
+
+body {
+  min-height: 100vh;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+}
+
+body::-webkit-scrollbar {
+  width: 0;
+}
+
+header {
+  margin-bottom: auto;
+  padding-bottom: 1rem;
+  padding-top: 1rem;
+}
+
+footer {
+  margin-top: auto;
+
+}
+
+.panel {
+  background: rgba(102, 51, 153, 0.95);
+  border-radius: 15px;
+  width: fit-content;
+  margin-left: auto;
+  margin-right: auto;
+  font-size: 22px;
+  padding: 0.5rem;
+  /*border: 1px solid white;*/
+}

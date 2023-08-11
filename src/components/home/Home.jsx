@@ -1,5 +1,5 @@
 function Home() {
-    return <div>
+    return <div className="panel">
         <p>Witaj w sklepie X</p>
     </div>
 }

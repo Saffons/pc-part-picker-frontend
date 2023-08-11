@@ -34,14 +34,11 @@ export async function postJsonDataToEndpoint(endpoint, data) {
     }
 
     try {
-        const response = await fetch(API_URL + endpoint, {
+        return await fetch(API_URL + endpoint, {
             method: "POST",
             headers: headers,
             body: JSON.stringify(data)
         });
-        if (response.ok) {
-            const json = await response.json();
-        }
     } catch (err) {
         console.error(err);
     }
@@ -49,23 +46,24 @@ export async function postJsonDataToEndpoint(endpoint, data) {
 
 export async function postToken(creds) {
     let auth = btoa(`${creds.login}:${creds.password}`);
-    try {
-        const response = await fetch(BASE_URL + "token", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": "Basic " + auth,
-            },
-            body: JSON.stringify(creds)
-        });
 
-        if (response.ok) {
-            const token = await response.text();
-            localStorage.setItem("jwt", token);
-        }
-    } catch (err) {
-        console.error(err);
+    const response = await fetch(BASE_URL + "token", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Basic " + auth,
+        },
+        body: JSON.stringify(creds)
+    });
+
+    if (response && response.ok) {
+        const token = await response.text();
+        localStorage.setItem("jwt", token);
+        return true;
+    } else {
+        return false;
     }
+
 }
 
 export async function deleteToken() {
@@ -82,6 +80,23 @@ export async function deleteToken() {
         mode: "no-cors",
     }).then(() => {
         localStorage.removeItem("jwt");
+    }).catch((err) => console.error(err))
+}
+
+export async function deletePart(partType, id) {
+    let headers = {
+        "Content-Type": "application/json",
+    };
+    let token = localStorage.getItem("jwt");
+    if (token) {
+        headers["Authorization"] = "Bearer " + token;
+    }
+    await fetch(API_PARTS_URL + partType + "/" + id, {
+        method: "DELETE",
+        headers: headers,
+    }).then((a) => {
+        console.log(partType, id);
+        console.log(a);
     }).catch((err) => console.error(err))
 }
 

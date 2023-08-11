@@ -1,6 +1,5 @@
 import styled from "@mui/styled-engine";
 import {
-    ButtonColumns,
     commonColumns,
     CPUColumns,
     GPUColumns,
@@ -10,9 +9,11 @@ import {
 } from "./utils";
 import './style.scss';
 import {DataGrid} from "@mui/x-data-grid";
-import {fetchAndStoreDataInMap, partsTypes} from "../../fetch/fetch";
-import {useEffect, useRef, useState} from "react";
+import {deletePart, fetchAndStoreDataInMap, partsTypes} from "../../fetch/fetch";
+import React, {useEffect, useRef, useState} from "react";
 import {useAuth} from "../../contexts/AuthContext";
+import {Button, Stack} from "@mui/material";
+import {Delete} from "@mui/icons-material";
 
 function createColumns() {
     const array = [
@@ -23,21 +24,36 @@ function createColumns() {
         {id: "storage", name: "Dyski", columns: StorageColumns},
     ];
     const arr = [];
+
     array.forEach(obj => {
-        arr.push({id: obj.id, name: obj.name, columns: commonColumns.concat(obj.columns.concat(ButtonColumns))});
+        arr.push({id: obj.id, name: obj.name, columns: commonColumns.concat(obj.columns)});
     })
+
     return arr;
 }
 
-function renderTables(array, data) {
+function renderTables(array, data, isAdmin) {
     return array.map((col, index) => {
-        return <div>
+        let arr = data.get(array[index].id).map((el) => {
+            return <DeleteButton variant="contained" startIcon={<Delete/>} onClick={() => {
+                deletePart(array[index].id, el.id).then(() => {
+                    window.location.reload(false);
+                });
+            }}>DELETE</DeleteButton>
+        })
+        return <div key={array[index].id}>
             <h3 className={'h3-lista'}>{col.name}</h3>
-            <PartsDataGrid key={data.get(col.id)} rows={data.get(col.id)} columns={col.columns} sx={{
+            <Stack direction="row">
+            <PartsDataGrid rows={data.get(col.id)} columns={col.columns} sx={{
                 boxShadow: 2,
                 border: 2,
-                borderColor: 'primary.light'
+                borderColor: 'primary.light',
             }}/>
+                <Stack direction="column" spacing={2.5} sx={{marginTop: "4.31rem"}}>
+                    {isAdmin && arr}
+                </Stack>
+            </Stack>
+
         </div>
     })
 }
@@ -52,6 +68,7 @@ function Parts() {
                 .then((resultMap) => {
                     partsData.current = resultMap;
                     setLoading(false);
+                    console.log(partsData.current);
                 })
                 .catch((error) => {
                     console.error("Error:", error);
@@ -60,11 +77,11 @@ function Parts() {
     });
 
     const tables = createColumns();
-    return <div className={'lista'}>
+    return <div className="panel">
         <h2 className={'h2-lista'}>Lista części dostępnych w sklepie X</h2>
-        {isLoggedIn ? (!loading && renderTables(tables, partsData.current))
+        {isLoggedIn ? (!loading && renderTables(tables, partsData.current, isAdmin))
             :
-            <div className={"error"}><p>Nie można załadować listy części - proszę się zalogować</p></div>
+            <div className="error"><p>Nie można załadować listy części - proszę się zalogować</p></div>
         }
     </div>
 }
@@ -73,5 +90,13 @@ const PartsDataGrid = styled(DataGrid)({
     background: 'rgba(255, 255, 255, 0.80)',
     borderRadius: '15px',
 })
+
+export const DeleteButton = styled(Button)({
+    width: 100,
+    height: "1.93rem",
+    color: "white",
+    backgroundColor: "rgb(255, 66, 44)",
+})
+
 
 export default Parts;
