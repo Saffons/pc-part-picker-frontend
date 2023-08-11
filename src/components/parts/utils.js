@@ -1,5 +1,3 @@
-import React from "react";
-
 export const commonColumns = [
     {field: 'name', headerName: 'Nazwa', width: 200, headerClassName: 'super-app-theme--header-first', headerAlign: 'center'},
     {field: 'manufacturer', headerName: 'Producent', width: 150, headerClassName: 'super-app-theme--header', headerAlign: 'center'},

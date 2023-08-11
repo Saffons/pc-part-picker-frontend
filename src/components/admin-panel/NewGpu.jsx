@@ -3,23 +3,21 @@ import {ErrorMessage, Field, Form, Formik} from "formik";
 import {Button, Divider, Stack} from "@mui/material";
 import {ImportContacts} from "@mui/icons-material";
 import React from "react";
-import {cpuSchema, CpuValues} from "./utils";
+import {gpuSchema, GpuValues} from "./utils";
 
-function NewCpu() {
-    let socketArr = []
+function NewGpu() {
+
     const handleSubmit = (values) => {
-        postJsonDataToEndpoint("parts/cpu", values)
+        postJsonDataToEndpoint("parts/gpu", values)
             .then(() => {
                 window.location.reload(false);
             });
     }
-    for (const item of cpuSchema.fields.socket._whitelist) {
-        socketArr.push(item);
-    }
+
     return (
         <Formik
-            initialValues={CpuValues}
-            validationSchema={cpuSchema}
+            initialValues={GpuValues}
+            validationSchema={gpuSchema}
             onSubmit={(values) => {
                 handleSubmit(values);
             }}
@@ -66,15 +64,15 @@ function NewCpu() {
                                     />
                                     <ErrorMessage name="price" component="span" className="error"/>
 
-                                    <label htmlFor="cores">Ilość rdzeni: </label>
+                                    <label htmlFor="memory">Pojemność pamięci (MB): </label>
                                     <Field
                                         type="number"
-                                        name="cores"
-                                        id="cores"
-                                        className={errors.cores && touched.cores ?
+                                        name="memory"
+                                        id="memory"
+                                        className={errors.memory && touched.memory ?
                                             "input-error" : null}
                                     />
-                                    <ErrorMessage name="cores" component="span" className="error"/>
+                                    <ErrorMessage name="memory" component="span" className="error"/>
 
                                     <label htmlFor="speed">Taktowanie: </label>
                                     <Field
@@ -85,20 +83,6 @@ function NewCpu() {
                                             "input-error" : null}
                                     />
                                     <ErrorMessage name="speed" component="span" className="error"/>
-
-                                    <label htmlFor="socket">Gniazdo: </label>
-                                    <Field
-                                        as="select"
-                                        name="socket"
-                                        id="socket"
-                                        className={errors.socket && touched.socket ?
-                                            "input-error" : null}
-                                    >
-                                        {socketArr.map((socket) => {
-                                            return <option key={socket} value={socket}>{socket}</option>
-                                        })}
-                                    </Field>
-                                    <ErrorMessage name="socket" component="span" className="error"/>
                                 </Stack>
 
                                 <Button variant="contained" size="medium" startIcon={<ImportContacts/>}
@@ -114,4 +98,4 @@ function NewCpu() {
     );
 }
 
-export default NewCpu;
+export default NewGpu;

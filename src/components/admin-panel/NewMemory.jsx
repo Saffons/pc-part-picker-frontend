@@ -3,23 +3,25 @@ import {ErrorMessage, Field, Form, Formik} from "formik";
 import {Button, Divider, Stack} from "@mui/material";
 import {ImportContacts} from "@mui/icons-material";
 import React from "react";
-import {cpuSchema, CpuValues} from "./utils";
+import {memorySchema, MemoryValues, motherboardSchema} from "./utils";
 
-function NewCpu() {
-    let socketArr = []
+function NewMemory() {
+    const memoryArr = [];
     const handleSubmit = (values) => {
-        postJsonDataToEndpoint("parts/cpu", values)
+        postJsonDataToEndpoint("parts/memory", values)
             .then(() => {
                 window.location.reload(false);
             });
     }
-    for (const item of cpuSchema.fields.socket._whitelist) {
-        socketArr.push(item);
+
+    for (const item of motherboardSchema.fields.memoryType._whitelist) {
+        memoryArr.push(item);
     }
+
     return (
         <Formik
-            initialValues={CpuValues}
-            validationSchema={cpuSchema}
+            initialValues={MemoryValues}
+            validationSchema={memorySchema}
             onSubmit={(values) => {
                 handleSubmit(values);
             }}
@@ -66,15 +68,29 @@ function NewCpu() {
                                     />
                                     <ErrorMessage name="price" component="span" className="error"/>
 
-                                    <label htmlFor="cores">Ilość rdzeni: </label>
+                                    <label htmlFor="memoryType">Typ pamięci: </label>
+                                    <Field
+                                        as="select"
+                                        name="memoryType"
+                                        id="memoryType"
+                                        className={errors.memoryType && touched.memoryType ?
+                                            "input-error" : null}
+                                    >
+                                        {memoryArr.map((type) => {
+                                            return <option key={type} value={type}>{type}</option>
+                                        })}
+                                    </Field>
+                                    <ErrorMessage name="memoryType" component="span" className="error"/>
+
+                                    <label htmlFor="capacity">Pojemność: </label>
                                     <Field
                                         type="number"
-                                        name="cores"
-                                        id="cores"
-                                        className={errors.cores && touched.cores ?
+                                        name="capacity"
+                                        id="capacity"
+                                        className={errors.capacity && touched.capacity ?
                                             "input-error" : null}
                                     />
-                                    <ErrorMessage name="cores" component="span" className="error"/>
+                                    <ErrorMessage name="capacity" component="span" className="error"/>
 
                                     <label htmlFor="speed">Taktowanie: </label>
                                     <Field
@@ -85,20 +101,6 @@ function NewCpu() {
                                             "input-error" : null}
                                     />
                                     <ErrorMessage name="speed" component="span" className="error"/>
-
-                                    <label htmlFor="socket">Gniazdo: </label>
-                                    <Field
-                                        as="select"
-                                        name="socket"
-                                        id="socket"
-                                        className={errors.socket && touched.socket ?
-                                            "input-error" : null}
-                                    >
-                                        {socketArr.map((socket) => {
-                                            return <option key={socket} value={socket}>{socket}</option>
-                                        })}
-                                    </Field>
-                                    <ErrorMessage name="socket" component="span" className="error"/>
                                 </Stack>
 
                                 <Button variant="contained" size="medium" startIcon={<ImportContacts/>}
@@ -114,4 +116,4 @@ function NewCpu() {
     );
 }
 
-export default NewCpu;
+export default NewMemory;

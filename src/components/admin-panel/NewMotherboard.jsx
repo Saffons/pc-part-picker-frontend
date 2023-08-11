@@ -3,23 +3,30 @@ import {ErrorMessage, Field, Form, Formik} from "formik";
 import {Button, Divider, Stack} from "@mui/material";
 import {ImportContacts} from "@mui/icons-material";
 import React from "react";
-import {cpuSchema, CpuValues} from "./utils";
+import {chipsetSocketArray, motherboardSchema, MotherboardValues} from "./utils";
 
 function NewCpu() {
     let socketArr = []
+    let memoryArr = []
     const handleSubmit = (values) => {
-        postJsonDataToEndpoint("parts/cpu", values)
+        postJsonDataToEndpoint("parts/motherboard", values)
             .then(() => {
                 window.location.reload(false);
             });
     }
-    for (const item of cpuSchema.fields.socket._whitelist) {
+
+    for (const item of motherboardSchema.fields.socket._whitelist) {
         socketArr.push(item);
     }
+
+    for (const item of motherboardSchema.fields.memoryType._whitelist) {
+        memoryArr.push(item);
+    }
+
     return (
         <Formik
-            initialValues={CpuValues}
-            validationSchema={cpuSchema}
+            initialValues={MotherboardValues}
+            validationSchema={motherboardSchema}
             onSubmit={(values) => {
                 handleSubmit(values);
             }}
@@ -66,25 +73,19 @@ function NewCpu() {
                                     />
                                     <ErrorMessage name="price" component="span" className="error"/>
 
-                                    <label htmlFor="cores">Ilość rdzeni: </label>
+                                    <label htmlFor="memoryType">Typ pamięci: </label>
                                     <Field
-                                        type="number"
-                                        name="cores"
-                                        id="cores"
-                                        className={errors.cores && touched.cores ?
+                                        as="select"
+                                        name="memoryType"
+                                        id="memoryType"
+                                        className={errors.memoryType && touched.memoryType ?
                                             "input-error" : null}
-                                    />
-                                    <ErrorMessage name="cores" component="span" className="error"/>
-
-                                    <label htmlFor="speed">Taktowanie: </label>
-                                    <Field
-                                        type="number"
-                                        name="speed"
-                                        id="speed"
-                                        className={errors.speed && touched.speed ?
-                                            "input-error" : null}
-                                    />
-                                    <ErrorMessage name="speed" component="span" className="error"/>
+                                    >
+                                        {memoryArr.map((type) => {
+                                            return <option key={type} value={type}>{type}</option>
+                                        })}
+                                    </Field>
+                                    <ErrorMessage name="memoryType" component="span" className="error"/>
 
                                     <label htmlFor="socket">Gniazdo: </label>
                                     <Field
@@ -93,13 +94,43 @@ function NewCpu() {
                                         id="socket"
                                         className={errors.socket && touched.socket ?
                                             "input-error" : null}
+                                        onChange={(e) => {
+                                            formik.handleChange(e);
+                                            formik.setFieldValue('selectField2', '');
+                                        }}
                                     >
                                         {socketArr.map((socket) => {
                                             return <option key={socket} value={socket}>{socket}</option>
                                         })}
                                     </Field>
                                     <ErrorMessage name="socket" component="span" className="error"/>
+
+                                    <label htmlFor="chipset">Chipset: </label>
+                                    <Field
+                                        as="select"
+                                        name="chipset"
+                                        id="chipset"
+                                        className={errors.chipset && touched.chipset ?
+                                            "input-error" : null}
+                                    >
+                                        {chipsetSocketArray[formik.values.socket].map((chipset) => {
+                                            return <option key={chipset} value={chipset}>{chipset}</option>
+                                        })}
+                                    </Field>
+                                    <ErrorMessage name="chipset" component="span" className="error"/>
+
+                                    <label htmlFor="m2">Dysk M2: </label>
+                                    <Field
+                                        type="checkbox"
+                                        name="m2"
+                                        id="m2"
+                                        className={errors.m2 && touched.m2 ?
+                                            "input-error" : null}
+                                    />
+                                    <ErrorMessage name="m2" component="span" className="error"/>
+
                                 </Stack>
+
 
                                 <Button variant="contained" size="medium" startIcon={<ImportContacts/>}
                                         type="submit"
