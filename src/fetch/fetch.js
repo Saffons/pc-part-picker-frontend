@@ -53,7 +53,7 @@ export async function postToken(creds) {
             "Content-Type": "application/json",
             "Authorization": "Basic " + auth,
         },
-        body: JSON.stringify(creds)
+        // body: JSON.stringify(creds)
     });
 
     if (response && response.ok) {
@@ -94,10 +94,14 @@ export async function deletePart(partType, id) {
     await fetch(API_PARTS_URL + partType + "/" + id, {
         method: "DELETE",
         headers: headers,
-    }).then((a) => {
-        console.log(partType, id);
-        console.log(a);
-    }).catch((err) => console.error(err))
+    }).then((resp) => {
+        if (resp.status === 400) {
+            return Promise.reject("Nie mozna usunąć, usuń konfiguracje, które zawierają ten procesor");
+        }
+        return Promise.resolve();
+    }).catch((err) => {
+        return Promise.reject(err)
+    })
 }
 
 export async function fetchAndStoreDataInMap(listOfEndpoints) {
@@ -116,4 +120,45 @@ export async function fetchAndStoreDataInMap(listOfEndpoints) {
         console.error("Error fetching data:", error);
         throw error;
     }
+}
+
+export async function fetchConfigurationData(userId) {
+    let headers = {
+        "Content-Type": "application/json",
+    };
+    let token = localStorage.getItem("jwt");
+    if (token) {
+        headers["Authorization"] = "Bearer " + token;
+    }
+    try {
+        const response = await fetch(API_URL + `configuration/user/${userId}`, {
+            headers: headers,
+        });
+        if (!response.ok) {
+            console.error(`Network response was not ok: ${response.status}`);
+        }
+        return await response.json();
+    } catch (error) {
+        console.error(`Error fetching data from: ${error.message}`);
+        throw error;
+    }
+}
+
+//TODO: zablokuj mozliwosc usuniecia nie swoich konfiguracji
+export async function deleteConfiguration(id) {
+    let headers = {
+        "Content-Type": "application/json",
+    };
+    let token = localStorage.getItem("jwt");
+    if (token) {
+        headers["Authorization"] = "Bearer " + token;
+    }
+    await fetch(API_URL + "configuration/" + id, {
+        method: "DELETE",
+        headers: headers,
+    }).then((resp) => {
+
+    }).catch((err) => {
+        console.log(err);
+    })
 }

@@ -23,7 +23,7 @@ const signInSchema = Yup.object().shape({
 const Login = (props) => {
     const [loginSuccessful, setLoginSuccessful] = useState(false);
     const [loginFailed, setLoginFailed] = useState(false);
-    const {setIsLoggedIn, setIsAdmin, setLogin} = useAuth();
+    const {setIsLoggedIn, setIsAdmin, setLogin, setUserId} = useAuth();
     const initialValues = {
         login: "",
         password: "",
@@ -42,6 +42,7 @@ const Login = (props) => {
                     let decoded = jwt_decode(localStorage.getItem("jwt"));
                     setIsAdmin(decoded["scope"] === "ROLE_ADMIN");
                     setLogin(decoded["sub"]);
+                    setUserId(decoded["jti"]);
                 }
             })
             .catch((err) => {
@@ -49,8 +50,8 @@ const Login = (props) => {
                 setIsLoggedIn(false);
                 setIsAdmin(false);
                 setLogin("");
+                setUserId(0);
             });
-
     }
 
     return (

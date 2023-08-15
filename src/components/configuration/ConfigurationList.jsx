@@ -1,0 +1,90 @@
+import React, {useEffect, useRef, useState} from "react";
+import {deleteConfiguration, deletePart, fetchConfigurationData} from "../../fetch/fetch";
+import {useAuth} from "../../contexts/AuthContext";
+import "./style.scss";
+import {PartsNames} from "../parts/utils";
+import {DeleteButton, partsArray} from "../parts/Parts";
+import {Button} from "@mui/material";
+import {Delete} from "@mui/icons-material";
+
+function renderConfigurations(configs) {
+    return configs.map((config, index) => {
+        return <div>
+            <h3 className="h3-lista">Konfiguracja nr {index + 1}
+                <br></br>
+                {config.configurationPrice}zł
+            </h3>
+            <table className="configuration-table">
+                <thead>
+                <tr className="configuration-table-header">
+                    <th></th>
+                    <th>Nazwa</th>
+                    <th>Dane</th>
+                    <th>Cena</th>
+                </tr>
+                </thead>
+                <tbody className="configuration-table-body">
+                {partsArray.map((partName, index) => {
+                    return <tr key={index}>
+                        <th>{PartsNames[index]}</th>
+                        <td>{config[partName.id + "Manufacturer"] + " " + config[partName.id + "Name"]}</td>
+                        <td>
+                            {partName.columns.map((attribute) => {
+                                let value = config[partName.id + attribute.field.charAt(0).toUpperCase() + attribute.field.slice(1)];
+                                return <table className="configuration-table-inner">
+                                    <tbody>
+                                    <tr>
+                                        <td style={{width: "100%"}}><b>{attribute.headerName}</b>
+                                            <br></br>
+                                            {typeof value === "boolean" ? (value ? "TAK" : "NIE") : value}
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                                // </tr>
+                            })}
+                        </td>
+                        <td>{config[partName.id + "Price"]}zł</td>
+                    </tr>
+                })}
+                </tbody>
+            </table>
+            <DeleteButton variant="contained" startIcon={<Delete/>}
+                          onClick={async () => await deleteConfiguration(config.configurationId)
+                              .then(() => {
+                                  window.location.reload(false);
+                              }).catch((err) => {
+
+                              })}>Usuń</DeleteButton>
+        </div>
+    })
+}
+
+function ConfigurationList() {
+    const configList = useRef([]);
+    const [loading, setLoading] = useState(true);
+    const {isLoggedIn, userId} = useAuth();
+    useEffect(() => {
+        if (isLoggedIn) {
+            fetchConfigurationData(userId)
+                .then((json) => {
+                    configList.current = json;
+                    setLoading(false);
+                })
+                .catch((error) => {
+                    console.error("Error:", error);
+                });
+        }
+    })
+
+    return <div className="panel" id="div-config-list">
+        <h2 className="h2-lista">Lista Twoich konfiguracji</h2>
+        {loading && <h2>Ładowanie listy konfiguracji</h2>}
+        {isLoggedIn ? (!loading && renderConfigurations(configList.current))
+            :
+            <div className="error"><p>Nie można załadować listy części - proszę się zalogować</p></div>
+        }
+    </div>
+}
+
+export default ConfigurationList;

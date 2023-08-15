@@ -1,7 +1,7 @@
 import {postJsonDataToEndpoint} from "../../fetch/fetch";
 import {ErrorMessage, Field, Form, Formik} from "formik";
 import {Button, Divider, Stack} from "@mui/material";
-import {ImportContacts} from "@mui/icons-material";
+import {Add} from "@mui/icons-material";
 import React from "react";
 import {chipsetSocketArray, motherboardSchema, MotherboardValues} from "./utils";
 
@@ -132,7 +132,7 @@ function NewCpu() {
                                 </Stack>
 
 
-                                <Button variant="contained" size="medium" startIcon={<ImportContacts/>}
+                                <Button variant="contained" size="medium" startIcon={<Add/>}
                                         type="submit"
                                         sx={{margin: "1rem"}}>Dodaj część</Button>
 

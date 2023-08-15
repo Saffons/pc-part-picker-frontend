@@ -1,0 +1,38 @@
+.configuration-table {
+    width: 100%;
+    align-content: center;
+    vertical-align: center;
+}
+
+.configuration-table-header > th {
+    color: blanchedalmond;
+    background-color: #66cc00;
+}
+
+.configuration-table-body > tr > th {
+    padding: 1rem;
+}
+
+.configuration-table-body > tr:nth-child(even) {
+    background-color: #993333;
+}
+
+.configuration-table-body > tr:nth-child(odd) {
+    background-color: #669933;
+}
+
+.configuration-table-footer {
+    display: block;
+    box-sizing: border-box;
+    clear: both;
+    background-color: floralwhite !important;
+}
+
+.configuration-table-inner {
+    width: 100%;
+
+    > tr > td {
+        vertical-align: middle !important;
+        text-align: center !important;
+    }
+}

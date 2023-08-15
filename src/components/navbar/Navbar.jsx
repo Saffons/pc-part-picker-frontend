@@ -9,7 +9,7 @@ import jwt_decode from "jwt-decode";
 
 function Navbar() {
     const navigate = useNavigate();
-    const {isLoggedIn, setIsLoggedIn, isAdmin, setIsAdmin, setLogin} = useAuth();
+    const {isLoggedIn, setIsLoggedIn, isAdmin, setIsAdmin, setLogin, setUserId} = useAuth();
 
     useEffect(() => {
         setIsLoggedIn(localStorage.getItem("jwt") !== null);
@@ -17,6 +17,8 @@ function Navbar() {
             let decoded = jwt_decode(localStorage.getItem("jwt"));
             setIsAdmin(decoded["scope"] === "ROLE_ADMIN")
             setLogin(decoded["sub"]);
+            setUserId(decoded["jti"]);
+
         } catch(e) {
 
         }
@@ -44,13 +46,24 @@ export const NavButton = styled(Button)({
     marginTop: "1rem !important"
 })
 
+export const BigNavButton = styled(Button)({
+    width: 300,
+    height: 60,
+    color: "white",
+    backgroundColor: "rgb(195, 130, 250)",
+    marginBottom: "1rem",
+    marginTop: "1rem !important",
+    padding: "0.5rem",
+    fontSize: "1.2rem",
+})
+
 const Logo = styled('img')({
     width: 50,
     height: 50,
     marginTop: "0.5rem !important",
     marginBottom: "0.5rem !important",
     border: "2px solid black",
-    cursor: "pointer"
+    cursor: "pointer",
 })
 
 export default Navbar;

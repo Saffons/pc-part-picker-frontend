@@ -16,6 +16,7 @@ import NewGpu from "./components/admin-panel/NewGpu";
 import NewMotherboard from "./components/admin-panel/NewMotherboard";
 import NewMemory from "./components/admin-panel/NewMemory";
 import NewStorage from "./components/admin-panel/NewStorage";
+import ConfigurationList from "./components/configuration/ConfigurationList";
 
 function App() {
     return (
@@ -40,6 +41,7 @@ function App() {
                         <Route path="/admin/newMotherboard" element={<NewMotherboard/>}></Route>
                         <Route path="/admin/newStorage" element={<NewStorage/>}></Route>
                         <Route path="/config" element={<Configuration/>}></Route>
+                        <Route path="/configs" element={<ConfigurationList/>}></Route>
                     </Routes>
                     <footer>
                         <Footer/>

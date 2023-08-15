@@ -68,7 +68,7 @@ export const newMotherboardSchema = Yup.object().shape({
                 return schema.oneOf(["B660", "Z690", "B760", "Z790"], "Podaj pasujący chipset");
             }
         })
-        .oneOf(["B550", "B650", "X570", "X670", "B660", "Z690", "B760", "Z790"]),
+        .oneOf(["B550", "B650", "X570", "X670", "B560", "Z590", "B760", "Z790"]),
 
     m2: Yup.bool()
         .required()
@@ -78,7 +78,7 @@ export const chipsetSocketArray = {
     "AM4": ["B550", "X570"],
     "AM5": ["B650", "X670"],
     "LGA1200": ["B560", "Z590"],
-    "LGA1700": ["B760", "B790"]
+    "LGA1700": ["B760", "Z790"]
 }
 
 export const newStorageSchema = Yup.object().shape({

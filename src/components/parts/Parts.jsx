@@ -15,17 +15,18 @@ import {useAuth} from "../../contexts/AuthContext";
 import {Button, Stack} from "@mui/material";
 import {Delete} from "@mui/icons-material";
 
-function createColumns() {
-    const array = [
-        {id: "cpu", name: "Procesory", columns: CPUColumns},
-        {id: "gpu", name: "Karty graficzne", columns: GPUColumns},
-        {id: "memory", name: "Pamięci RAM", columns: MemoryColumns},
-        {id: "motherboard", name: "Płyty główne", columns: MotherboardColumns},
-        {id: "storage", name: "Dyski", columns: StorageColumns},
-    ];
+export const partsArray = [
+    {id: "cpu", name: "Procesory", columns: CPUColumns},
+    {id: "gpu", name: "Karty graficzne", columns: GPUColumns},
+    {id: "memory", name: "Pamięci RAM", columns: MemoryColumns},
+    {id: "motherboard", name: "Płyty główne", columns: MotherboardColumns},
+    {id: "storage", name: "Dyski", columns: StorageColumns},
+];
+
+export const createColumns = () => {
     const arr = [];
 
-    array.forEach(obj => {
+    partsArray.forEach(obj => {
         arr.push({id: obj.id, name: obj.name, columns: commonColumns.concat(obj.columns)});
     })
 
@@ -35,20 +36,22 @@ function createColumns() {
 function renderTables(array, data, isAdmin) {
     return array.map((col, index) => {
         let arr = data.get(array[index].id).map((el) => {
-            return <DeleteButton variant="contained" startIcon={<Delete/>} onClick={() => {
-                deletePart(array[index].id, el.id).then(() => {
+            return <DeleteButton variant="contained" startIcon={<Delete/>} onClick={async () => {
+                await deletePart(array[index].id, el.id).then(() => {
                     window.location.reload(false);
+                }).catch((err) => {
+                    alert(err);
                 });
             }}>DELETE</DeleteButton>
         })
         return <div key={array[index].id}>
             <h3 className={'h3-lista'}>{col.name}</h3>
             <Stack direction="row">
-            <PartsDataGrid rows={data.get(col.id)} columns={col.columns} sx={{
-                boxShadow: 2,
-                border: 2,
-                borderColor: 'primary.light',
-            }}/>
+                <PartsDataGrid rows={data.get(col.id)} columns={col.columns} sx={{
+                    boxShadow: 2,
+                    border: 2,
+                    borderColor: 'primary.light',
+                }}/>
                 <Stack direction="column" spacing={2.5} sx={{marginTop: "4.31rem"}}>
                     {isAdmin && arr}
                 </Stack>
@@ -68,7 +71,6 @@ function Parts() {
                 .then((resultMap) => {
                     partsData.current = resultMap;
                     setLoading(false);
-                    console.log(partsData.current);
                 })
                 .catch((error) => {
                     console.error("Error:", error);

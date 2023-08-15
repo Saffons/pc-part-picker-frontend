@@ -7,9 +7,10 @@ export function AuthProvider({ children }) {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [isAdmin, setIsAdmin] = useState(false);
     const [login, setLogin] = useState('');
+    const [userId, setUserId] = useState(0);
 
     return (
-        <AuthContext.Provider value={{ isLoggedIn, setIsLoggedIn, isAdmin, setIsAdmin, login, setLogin }}>
+        <AuthContext.Provider value={{ isLoggedIn, setIsLoggedIn, isAdmin, setIsAdmin, login, setLogin, userId, setUserId }}>
             {children}
         </AuthContext.Provider>
     );
