@@ -27,6 +27,7 @@ async function fetchDataFromEndpoint(endpoint) {
 export async function postJsonDataToEndpoint(endpoint, data) {
     let headers = {
         "Content-Type": "application/json",
+        "Accept": "*/*"
     };
     let token = localStorage.getItem("jwt");
     if (token) {
@@ -52,6 +53,7 @@ export async function postToken(creds) {
         headers: {
             "Content-Type": "application/json",
             "Authorization": "Basic " + auth,
+            "Accept": "*/*"
         },
         // body: JSON.stringify(creds)
     });
@@ -69,6 +71,7 @@ export async function postToken(creds) {
 export async function deleteToken() {
     let headers = {
         "Content-Type": "application/json",
+        "Accept": "*/*"
     };
     let token = localStorage.getItem("jwt");
     if (token) {
@@ -86,6 +89,7 @@ export async function deleteToken() {
 export async function deletePart(partType, id) {
     let headers = {
         "Content-Type": "application/json",
+        "Accept": "*/*"
     };
     let token = localStorage.getItem("jwt");
     if (token) {
@@ -125,6 +129,7 @@ export async function fetchAndStoreDataInMap(listOfEndpoints) {
 export async function fetchConfigurationData(userId) {
     let headers = {
         "Content-Type": "application/json",
+        "Accept": "*/*"
     };
     let token = localStorage.getItem("jwt");
     if (token) {
@@ -144,10 +149,10 @@ export async function fetchConfigurationData(userId) {
     }
 }
 
-//TODO: zablokuj mozliwosc usuniecia nie swoich konfiguracji
 export async function deleteConfiguration(id) {
     let headers = {
         "Content-Type": "application/json",
+        "Accept": "*/*"
     };
     let token = localStorage.getItem("jwt");
     if (token) {
