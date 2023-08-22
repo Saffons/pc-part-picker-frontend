@@ -1,10 +1,9 @@
 import React, {useEffect, useRef, useState} from "react";
-import {deleteConfiguration, deletePart, fetchConfigurationData} from "../../fetch/fetch";
+import {deleteConfiguration, fetchConfigurationData} from "../../fetch/fetch";
 import {useAuth} from "../../contexts/AuthContext";
 import "./style.scss";
 import {PartsNames} from "../parts/utils";
 import {DeleteButton, partsArray} from "../parts/Parts";
-import {Button} from "@mui/material";
 import {Delete} from "@mui/icons-material";
 
 function renderConfigurations(configs) {
@@ -41,7 +40,6 @@ function renderConfigurations(configs) {
                                     </tr>
                                     </tbody>
                                 </table>
-                                // </tr>
                             })}
                         </td>
                         <td>{config[partName.id + "Price"]}zł</td>

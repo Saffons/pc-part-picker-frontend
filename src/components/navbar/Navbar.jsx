@@ -22,6 +22,7 @@ function Navbar() {
         } catch(e) {
 
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     return <div className="navbar">
