@@ -5,8 +5,16 @@ import {Add} from "@mui/icons-material";
 import React from "react";
 import {gpuSchema, GpuValues} from "./utils";
 
+/**
+ * Functional NewGpu component
+ * @returns {JSX.Element}
+ * @constructor
+ */
 function NewGpu() {
-
+    /**
+     * Handler for sending form values
+     * @param values
+     */
     const handleSubmit = (values) => {
         postJsonDataToEndpoint("parts/gpu", values)
             .then(() => {

@@ -5,7 +5,16 @@ import {Add} from "@mui/icons-material";
 import React from "react";
 import {memorySchema, MemoryValues} from "./utils";
 
+/**
+ * Functional NewStorage component
+ * @returns {JSX.Element}
+ * @constructor
+ */
 function NewStorage() {
+    /**
+     * Handler for sending form values
+     * @param values
+     */
     const handleSubmit = (values) => {
         postJsonDataToEndpoint("parts/storage", values)
             .then(() => {

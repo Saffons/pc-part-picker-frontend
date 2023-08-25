@@ -5,8 +5,17 @@ import {Add} from "@mui/icons-material";
 import React from "react";
 import {memorySchema, MemoryValues, motherboardSchema} from "./utils";
 
+/**
+ * Functional NewMemory component
+ * @returns {JSX.Element}
+ * @constructor
+ */
 function NewMemory() {
     const memoryArr = [];
+    /**
+     * Handler for sending form values
+     * @param values
+     */
     const handleSubmit = (values) => {
         postJsonDataToEndpoint("parts/memory", values)
             .then(() => {

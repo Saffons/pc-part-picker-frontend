@@ -5,8 +5,17 @@ import {Add} from "@mui/icons-material";
 import React from "react";
 import {cpuSchema, CpuValues} from "./utils";
 
+/**
+ * Functional NewCpu component
+ * @returns {JSX.Element}
+ * @constructor
+ */
 function NewCpu() {
     let socketArr = []
+    /**
+     * Handler for sending form values
+     * @param values
+     */
     const handleSubmit = (values) => {
         postJsonDataToEndpoint("parts/cpu", values)
             .then(() => {

@@ -2,6 +2,11 @@ import {NavButton} from "../navbar/Navbar";
 import {useNavigate} from "react-router-dom";
 import {Stack} from "@mui/material";
 
+/**
+ * Functional AdminPanel component
+ * @returns {JSX.Element}
+ * @constructor
+ */
 function AdminPanel() {
     const navigate = useNavigate();
     return <div className="panel">

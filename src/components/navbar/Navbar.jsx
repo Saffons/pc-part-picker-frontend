@@ -7,6 +7,11 @@ import {useAuth} from "../../contexts/AuthContext";
 import {useEffect} from "react";
 import jwt_decode from "jwt-decode";
 
+/**
+ * Functional Navbar component
+ * @returns {JSX.Element}
+ * @constructor
+ */
 function Navbar() {
     const navigate = useNavigate();
     const {isLoggedIn, setIsLoggedIn, isAdmin, setIsAdmin, setLogin, setUserId} = useAuth();

@@ -9,6 +9,10 @@ import {useAuth} from "../../contexts/AuthContext";
 import jwt_decode from "jwt-decode";
 import {useNavigate} from "react-router-dom";
 
+/**
+ * Schema for validating login form
+ * @type {ObjectSchema<_<{[P in keyof _<TypeFromShape<{}, AnyObject>>]: P extends keyof {password: StringSchema<NonNullable<string | undefined>, AnyObject, undefined, "">, login: StringSchema<NonNullable<string | undefined>, AnyObject, undefined, "">} ? TypeFromShape<{password: StringSchema<NonNullable<string | undefined>, AnyObject, undefined, "">, login: StringSchema<NonNullable<string | undefined>, AnyObject, undefined, "">}, AnyObject>[P] : _<TypeFromShape<{}, AnyObject>>[P]} & TypeFromShape<{password: StringSchema<NonNullable<string | undefined>, AnyObject, undefined, "">, login: StringSchema<NonNullable<string | undefined>, AnyObject, undefined, "">}, AnyObject>> | _<Extract<_<TypeFromShape<{}, AnyObject>>, null | undefined>>, AnyObject, Extract<"", "d"> extends never ? _<_<DefaultFromShape<{}>> & DefaultFromShape<{password: StringSchema<NonNullable<string | undefined>, AnyObject, undefined, "">, login: StringSchema<NonNullable<string | undefined>, AnyObject, undefined, "">}>> : _<DefaultFromShape<{}>>, "">}
+ */
 const signInSchema = Yup.object().shape({
     login: Yup.string()
         .required("Login wymagany")
@@ -21,6 +25,12 @@ const signInSchema = Yup.object().shape({
         .max(20, "Hasło może mieć maksymalnie 20 znaków")
 })
 
+/**
+ * Functional Login component
+ * @param props
+ * @returns {JSX.Element}
+ * @constructor
+ */
 const Login = (props) => {
     const navigate = useNavigate();
     const [loginSuccessful, setLoginSuccessful] = useState(false);

@@ -5,9 +5,18 @@ import {Add} from "@mui/icons-material";
 import React from "react";
 import {chipsetSocketArray, motherboardSchema, MotherboardValues} from "./utils";
 
+/**
+ * Functional NewCpu component
+ * @returns {JSX.Element}
+ * @constructor
+ */
 function NewCpu() {
     let socketArr = []
     let memoryArr = []
+    /**
+     * Handler for sending form values
+     * @param values
+     */
     const handleSubmit = (values) => {
         postJsonDataToEndpoint("parts/motherboard", values)
             .then(() => {

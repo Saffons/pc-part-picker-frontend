@@ -6,6 +6,10 @@ import {postJsonDataToEndpoint} from "../../fetch/fetch";
 import {Formik, Form, Field, ErrorMessage} from "formik";
 import * as Yup from "yup";
 
+/**
+ * Schema for validating registration form
+ * @type {ObjectSchema<_<{[P in keyof _<TypeFromShape<{}, AnyObject>>]: P extends keyof {firstName: StringSchema<NonNullable<string | undefined>, AnyObject, undefined, "">, lastName: StringSchema<NonNullable<string | undefined>, AnyObject, undefined, "">, password: StringSchema<NonNullable<string | undefined>, AnyObject, undefined, "">, login: StringSchema<NonNullable<string | undefined>, AnyObject, undefined, "">, email: StringSchema<NonNullable<string | undefined>, AnyObject, undefined, "">} ? TypeFromShape<{firstName: StringSchema<NonNullable<string | undefined>, AnyObject, undefined, "">, lastName: StringSchema<NonNullable<string | undefined>, AnyObject, undefined, "">, password: StringSchema<NonNullable<string | undefined>, AnyObject, undefined, "">, login: StringSchema<NonNullable<string | undefined>, AnyObject, undefined, "">, email: StringSchema<NonNullable<string | undefined>, AnyObject, undefined, "">}, AnyObject>[P] : _<TypeFromShape<{}, AnyObject>>[P]} & TypeFromShape<{firstName: StringSchema<NonNullable<string | undefined>, AnyObject, undefined, "">, lastName: StringSchema<NonNullable<string | undefined>, AnyObject, undefined, "">, password: StringSchema<NonNullable<string | undefined>, AnyObject, undefined, "">, login: StringSchema<NonNullable<string | undefined>, AnyObject, undefined, "">, email: StringSchema<NonNullable<string | undefined>, AnyObject, undefined, "">}, AnyObject>> | _<Extract<_<TypeFromShape<{}, AnyObject>>, null | undefined>>, AnyObject, Extract<"", "d"> extends never ? _<_<DefaultFromShape<{}>> & DefaultFromShape<{firstName: StringSchema<NonNullable<string | undefined>, AnyObject, undefined, "">, lastName: StringSchema<NonNullable<string | undefined>, AnyObject, undefined, "">, password: StringSchema<NonNullable<string | undefined>, AnyObject, undefined, "">, login: StringSchema<NonNullable<string | undefined>, AnyObject, undefined, "">, email: StringSchema<NonNullable<string | undefined>, AnyObject, undefined, "">}>> : _<DefaultFromShape<{}>>, "">}
+ */
 const signUpSchema = Yup.object().shape({
     email: Yup.string().email()
         .required("Email wymagany"),
@@ -31,6 +35,11 @@ const signUpSchema = Yup.object().shape({
         .max(20, "Hasło może mieć maksymalnie 20 znaków")
 })
 
+/**
+ * Functional Register component
+ * @returns {JSX.Element}
+ * @constructor
+ */
 const Register = () => {
     const [registerSuccessful, setRegisterSuccessful] = useState(false);
     const [registerFailed, setRegisterFailed] = useState(false);

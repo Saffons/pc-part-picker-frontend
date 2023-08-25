@@ -3,6 +3,9 @@ import {useAuth} from "../../contexts/AuthContext";
 import {useNavigate} from "react-router-dom";
 import {useEffect} from "react";
 
+/**
+ * Functional Logout component
+ */
 const Logout = () => {
     const {setIsLoggedIn, setIsAdmin, setLogin} = useAuth();
     const navigate = useNavigate();

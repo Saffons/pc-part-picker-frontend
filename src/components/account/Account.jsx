@@ -3,6 +3,11 @@ import {BigNavButton} from "../navbar/Navbar";
 import {useNavigate} from "react-router-dom";
 import {Stack} from "@mui/material";
 
+/**
+ * Functional Account component
+ * @returns {JSX.Element}
+ * @constructor
+ */
 function Account() {
     const {isLoggedIn, login} = useAuth();
     const navigate = useNavigate();

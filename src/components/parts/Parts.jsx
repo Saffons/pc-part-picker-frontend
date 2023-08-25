@@ -72,6 +72,12 @@ function renderTables(array, data, isAdmin) {
     })
 }
 
+/**
+ * Functional component for Parts table
+ * @returns {JSX.Element}
+ * @constructor
+ */
+
 function Parts() {
     let partsData = useRef(new Map());
     const [loading, setLoading] = useState(true);

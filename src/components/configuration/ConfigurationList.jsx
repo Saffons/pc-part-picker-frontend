@@ -6,6 +6,12 @@ import {PartsNames} from "../parts/utils";
 import {DeleteButton, partsArray} from "../parts/Parts";
 import {Delete} from "@mui/icons-material";
 
+
+/**
+ * Helper function for rendering every configuration in a nicely readable manner
+ * @param configs Fetched array of all user's configurations
+ * @returns {*}
+ */
 function renderConfigurations(configs) {
     return configs.map((config, index) => {
         return <div>
@@ -58,6 +64,11 @@ function renderConfigurations(configs) {
     })
 }
 
+/**
+ * Functional ConfigurationList component
+ * @returns {JSX.Element}
+ * @constructor
+ */
 function ConfigurationList() {
     const configList = useRef([]);
     const [loading, setLoading] = useState(true);
