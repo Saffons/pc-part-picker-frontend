@@ -18,6 +18,10 @@ import NewMemory from "./components/admin-panel/NewMemory";
 import NewStorage from "./components/admin-panel/NewStorage";
 import ConfigurationList from "./components/configuration/ConfigurationList";
 
+/**
+ * @returns All main application components that are placed inside AuthProvider that provides context for user
+ * authorization
+ */
 function App() {
     return (
         <div className="App">

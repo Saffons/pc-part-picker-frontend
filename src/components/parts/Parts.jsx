@@ -23,6 +23,10 @@ export const partsArray = [
     {id: "storage", name: "Dyski", columns: StorageColumns},
 ];
 
+/**
+ * Function that creates table columns that are needed for the DataGrid component
+ * @returns {*[]} object with columns and their properties
+ */
 export const createColumns = () => {
     const arr = [];
 
@@ -33,6 +37,13 @@ export const createColumns = () => {
     return arr;
 }
 
+/**
+ * Function that renders DataGrid table filled with all parts' data together with control buttons
+ * @param array Array of columns' information
+ * @param data Map of all parts' data fetched from backend
+ * @param isAdmin Boolean
+ * @returns {*} JSX element with the table
+ */
 function renderTables(array, data, isAdmin) {
     return array.map((col, index) => {
         let arr = data.get(array[index].id).map((el) => {

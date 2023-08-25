@@ -7,6 +7,7 @@ import {Formik, Form, Field, ErrorMessage} from "formik";
 import * as Yup from "yup";
 import {useAuth} from "../../contexts/AuthContext";
 import jwt_decode from "jwt-decode";
+import {useNavigate} from "react-router-dom";
 
 const signInSchema = Yup.object().shape({
     login: Yup.string()
@@ -21,6 +22,7 @@ const signInSchema = Yup.object().shape({
 })
 
 const Login = (props) => {
+    const navigate = useNavigate();
     const [loginSuccessful, setLoginSuccessful] = useState(false);
     const [loginFailed, setLoginFailed] = useState(false);
     const {setIsLoggedIn, setIsAdmin, setLogin, setUserId} = useAuth();
@@ -105,6 +107,7 @@ const Login = (props) => {
                                 </div>
 
                                 <h3>Don't have an account yet?</h3>
+                                <Button onClick={() => navigate("/register")}></Button>
                                 <p>Click <a href="/register">here</a> to sign up</p>
                             </div>
                         ) :

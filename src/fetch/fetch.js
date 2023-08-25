@@ -2,6 +2,11 @@ import {API_PARTS_URL, API_URL, BASE_URL} from "./utils";
 
 export const partsTypes = ["cpu", "gpu", "memory", "motherboard", "storage"];
 
+/**
+ * Function that invokes a GET method on provided computer parts endpoint
+ * @param endpoint URL of endpoint that will be called
+ * @returns {Promise<any>} Promise with response's body being transformed to JSON.
+ */
 async function fetchDataFromEndpoint(endpoint) {
     let headers = {
         "Content-Type": "application/json",
@@ -24,6 +29,12 @@ async function fetchDataFromEndpoint(endpoint) {
     }
 }
 
+/**
+ * Function that invokes a POST method on provided endpoint, with its body filled with data parameter
+ * @param endpoint URL of endpoint to be called
+ * @param data Object to be sent as body
+ * @returns {Promise<Response>} Promise that resolves to response from backend
+ */
 export async function postJsonDataToEndpoint(endpoint, data) {
     let headers = {
         "Content-Type": "application/json",
@@ -45,6 +56,11 @@ export async function postJsonDataToEndpoint(endpoint, data) {
     }
 }
 
+/**
+ * Function that calls backend's authorization service to get JWT and saves it in localStorage
+ * @param creds Object with fields `login` and `password` that are sent as Basic Auth
+ * @returns {Promise<boolean>} Promise that resolves to a boolean indicating if login was successful
+ */
 export async function postToken(creds) {
     let auth = btoa(`${creds.login}:${creds.password}`);
 
@@ -55,7 +71,6 @@ export async function postToken(creds) {
             "Authorization": "Basic " + auth,
             "Accept": "*/*"
         },
-        // body: JSON.stringify(creds)
     });
 
     if (response && response.ok) {
@@ -68,6 +83,10 @@ export async function postToken(creds) {
 
 }
 
+/**
+ * Function that calls backend's logout endpoint and deletes JWT from browser's localStorage
+ * @returns {Promise<void>}
+ */
 export async function deleteToken() {
     let headers = {
         "Content-Type": "application/json",
@@ -86,6 +105,12 @@ export async function deleteToken() {
     }).catch((err) => console.error(err))
 }
 
+/**
+ * Function that invokes DELETE method on backend's computer part API with partType of ID equal to id
+ * @param partType type of part to be deleted, e.g. cpu
+ * @param id ID of part to be deleted
+ * @returns {Promise<void>}
+ */
 export async function deletePart(partType, id) {
     let headers = {
         "Content-Type": "application/json",
@@ -108,6 +133,11 @@ export async function deletePart(partType, id) {
     })
 }
 
+/**
+ * Function that calls every endpoint from listOfEndpoints and then stores every response in a map
+ * @param listOfEndpoints array of endpoints to be called
+ * @returns {Promise<Map<any, any>>} Promise that resolves to a Map with results of all backend calls
+ */
 export async function fetchAndStoreDataInMap(listOfEndpoints) {
     const resultMap = new Map();
 
@@ -126,6 +156,11 @@ export async function fetchAndStoreDataInMap(listOfEndpoints) {
     }
 }
 
+/**
+ * Function that invokes GET method to get data about all configurations created by user with ID equal to userId
+ * @param userId userId
+ * @returns {Promise<any>} Promise that resolves to a list of all user's configurations
+ */
 export async function fetchConfigurationData(userId) {
     let headers = {
         "Content-Type": "application/json",
@@ -149,6 +184,11 @@ export async function fetchConfigurationData(userId) {
     }
 }
 
+/**
+ * Function that invokes DELETE method to delete a configuration with ID equal to id
+ * @param id ID of configuration that is to be deleted
+ * @returns {Promise<void>}
+ */
 export async function deleteConfiguration(id) {
     let headers = {
         "Content-Type": "application/json",

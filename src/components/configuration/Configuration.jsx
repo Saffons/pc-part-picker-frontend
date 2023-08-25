@@ -138,7 +138,8 @@ function Configuration() {
                         memory: memory,
                         storage: storage,
                         account: userId
-                    });
+                    })
+                    alert("Dodano pomyślnie");
                 }}>Zapisz</Button>}
             </div>
         </div> :
