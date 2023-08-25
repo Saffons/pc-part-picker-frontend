@@ -138,8 +138,8 @@ function Configuration() {
                         memory: memory,
                         storage: storage,
                         account: userId
-                    })
-                    alert("Dodano pomyślnie");
+                    }).then(() => alert("Dodano pomyślnie"))
+                        .catch(() => alert("Nie udało się dodać"))
                 }}>Zapisz</Button>}
             </div>
         </div> :
