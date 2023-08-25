@@ -6,11 +6,11 @@ import React from "react";
 import {chipsetSocketArray, motherboardSchema, MotherboardValues} from "./utils";
 
 /**
- * Functional NewCpu component
+ * Functional NewMotherboard component
  * @returns {JSX.Element}
  * @constructor
  */
-function NewCpu() {
+function NewMotherboard() {
     let socketArr = []
     let memoryArr = []
     /**
@@ -154,4 +154,4 @@ function NewCpu() {
     );
 }
 
-export default NewCpu;
+export default NewMotherboard;
