@@ -11,7 +11,6 @@ import {useNavigate} from "react-router-dom";
 
 /**
  * Schema for validating login form
- * @type {ObjectSchema<_<{[P in keyof _<TypeFromShape<{}, AnyObject>>]: P extends keyof {password: StringSchema<NonNullable<string | undefined>, AnyObject, undefined, "">, login: StringSchema<NonNullable<string | undefined>, AnyObject, undefined, "">} ? TypeFromShape<{password: StringSchema<NonNullable<string | undefined>, AnyObject, undefined, "">, login: StringSchema<NonNullable<string | undefined>, AnyObject, undefined, "">}, AnyObject>[P] : _<TypeFromShape<{}, AnyObject>>[P]} & TypeFromShape<{password: StringSchema<NonNullable<string | undefined>, AnyObject, undefined, "">, login: StringSchema<NonNullable<string | undefined>, AnyObject, undefined, "">}, AnyObject>> | _<Extract<_<TypeFromShape<{}, AnyObject>>, null | undefined>>, AnyObject, Extract<"", "d"> extends never ? _<_<DefaultFromShape<{}>> & DefaultFromShape<{password: StringSchema<NonNullable<string | undefined>, AnyObject, undefined, "">, login: StringSchema<NonNullable<string | undefined>, AnyObject, undefined, "">}>> : _<DefaultFromShape<{}>>, "">}
  */
 const signInSchema = Yup.object().shape({
     login: Yup.string()

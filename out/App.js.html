@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: App.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: App.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import './App.css';
+import Navbar from "./components/navbar/Navbar";
+import {BrowserRouter, Route, Routes} from "react-router-dom";
+import Home from "./components/home/Home";
+import Parts from "./components/parts/Parts";
+import Login from "./components/login/Login";
+import Register from "./components/login/Register";
+import Logout from "./components/login/Logout";
+import Footer from "./components/footer/Footer";
+import Account from "./components/account/Account";
+import AdminPanel from "./components/admin-panel/AdminPanel";
+import {AuthProvider} from "./contexts/AuthContext";
+import NewCpu from "./components/admin-panel/NewCpu";
+import Configuration from "./components/configuration/Configuration";
+import NewGpu from "./components/admin-panel/NewGpu";
+import NewMotherboard from "./components/admin-panel/NewMotherboard";
+import NewMemory from "./components/admin-panel/NewMemory";
+import NewStorage from "./components/admin-panel/NewStorage";
+import ConfigurationList from "./components/configuration/ConfigurationList";
+
+/**
+ * @returns All main application components that are placed inside AuthProvider that provides context for user
+ * authorization
+ */
+function App() {
+    return (
+        &lt;div className="App">
+            &lt;AuthProvider>
+                &lt;BrowserRouter>
+                    &lt;body>
+                    &lt;header>
+                        &lt;Navbar/>
+                    &lt;/header>
+                    &lt;Routes>
+                        &lt;Route path="/" element={&lt;Home/>}>&lt;/Route>
+                        &lt;Route path="/parts" element={&lt;Parts/>}>&lt;/Route>
+                        &lt;Route path="/login" element={&lt;Login/>}>&lt;/Route>
+                        &lt;Route path="/logout" element={&lt;Logout/>}>&lt;/Route>
+                        &lt;Route path="/register" element={&lt;Register/>}>&lt;/Route>
+                        &lt;Route path="/account" element={&lt;Account/>}>&lt;/Route>
+                        &lt;Route path="/admin" element={&lt;AdminPanel/>}/>
+                        &lt;Route path="/admin/newCpu" element={&lt;NewCpu/>}>&lt;/Route>
+                        &lt;Route path="/admin/newGpu" element={&lt;NewGpu/>}>&lt;/Route>
+                        &lt;Route path="/admin/newMemory" element={&lt;NewMemory/>}>&lt;/Route>
+                        &lt;Route path="/admin/newMotherboard" element={&lt;NewMotherboard/>}>&lt;/Route>
+                        &lt;Route path="/admin/newStorage" element={&lt;NewStorage/>}>&lt;/Route>
+                        &lt;Route path="/config" element={&lt;Configuration/>}>&lt;/Route>
+                        &lt;Route path="/configs" element={&lt;ConfigurationList/>}>&lt;/Route>
+                    &lt;/Routes>
+                    &lt;footer>
+                        &lt;Footer/>
+                    &lt;/footer>
+                    &lt;/body>
+                &lt;/BrowserRouter>
+            &lt;/AuthProvider>
+        &lt;/div>
+    );
+}
+
+export default App;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Account.html">Account</a></li><li><a href="AdminPanel.html">AdminPanel</a></li><li><a href="ConfigurationList.html">ConfigurationList</a></li><li><a href="Home.html">Home</a></li><li><a href="Login.html">Login</a></li><li><a href="Navbar.html">Navbar</a></li><li><a href="NewCpu.html">NewCpu</a></li><li><a href="NewGpu.html">NewGpu</a></li><li><a href="NewMemory.html">NewMemory</a></li><li><a href="NewMotherboard.html">NewMotherboard</a></li><li><a href="NewStorage.html">NewStorage</a></li><li><a href="Parts.html">Parts</a></li><li><a href="Register.html">Register</a></li></ul><h3>Global</h3><ul><li><a href="global.html#App">App</a></li><li><a href="global.html#AuthProvider">AuthProvider</a></li><li><a href="global.html#Logout">Logout</a></li><li><a href="global.html#createColumns">createColumns</a></li><li><a href="global.html#deleteConfiguration">deleteConfiguration</a></li><li><a href="global.html#deletePart">deletePart</a></li><li><a href="global.html#deleteToken">deleteToken</a></li><li><a href="global.html#fetchAndStoreDataInMap">fetchAndStoreDataInMap</a></li><li><a href="global.html#fetchConfigurationData">fetchConfigurationData</a></li><li><a href="global.html#fetchDataFromEndpoint">fetchDataFromEndpoint</a></li><li><a href="global.html#postJsonDataToEndpoint">postJsonDataToEndpoint</a></li><li><a href="global.html#postToken">postToken</a></li><li><a href="global.html#renderConfigurations">renderConfigurations</a></li><li><a href="global.html#renderTables">renderTables</a></li><li><a href="global.html#signInSchema">signInSchema</a></li><li><a href="global.html#signUpSchema">signUpSchema</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Sat Aug 26 2023 00:05:16 GMT+0200 (czas środkowoeuropejski letni)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

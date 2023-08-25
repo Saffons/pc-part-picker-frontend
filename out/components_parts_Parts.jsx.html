@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: components/parts/Parts.jsx</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: components/parts/Parts.jsx</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import styled from "@mui/styled-engine";
+import {
+    commonColumns,
+    CPUColumns,
+    GPUColumns,
+    MemoryColumns,
+    MotherboardColumns,
+    StorageColumns
+} from "./utils";
+import './style.scss';
+import {DataGrid} from "@mui/x-data-grid";
+import {deletePart, fetchAndStoreDataInMap, partsTypes} from "../../fetch/fetch";
+import React, {useEffect, useRef, useState} from "react";
+import {useAuth} from "../../contexts/AuthContext";
+import {Button, Stack} from "@mui/material";
+import {Delete} from "@mui/icons-material";
+
+export const partsArray = [
+    {id: "cpu", name: "Procesory", columns: CPUColumns},
+    {id: "gpu", name: "Karty graficzne", columns: GPUColumns},
+    {id: "memory", name: "Pamięci RAM", columns: MemoryColumns},
+    {id: "motherboard", name: "Płyty główne", columns: MotherboardColumns},
+    {id: "storage", name: "Dyski", columns: StorageColumns},
+];
+
+/**
+ * Function that creates table columns that are needed for the DataGrid component
+ * @returns object with columns and their properties
+ */
+export const createColumns = () => {
+    const arr = [];
+
+    partsArray.forEach(obj => {
+        arr.push({id: obj.id, name: obj.name, columns: commonColumns.concat(obj.columns)});
+    })
+
+    return arr;
+}
+
+/**
+ * Function that renders DataGrid table filled with all parts' data together with control buttons
+ * @param array Array of columns' information
+ * @param data Map of all parts' data fetched from backend
+ * @param isAdmin Boolean
+ * @returns {*} JSX element with the table
+ */
+function renderTables(array, data, isAdmin) {
+    return array.map((col, index) => {
+        let arr = data.get(array[index].id).map((el) => {
+            return &lt;DeleteButton variant="contained" startIcon={&lt;Delete/>} onClick={async () => {
+                await deletePart(array[index].id, el.id).then(() => {
+                    window.location.reload(false);
+                }).catch((err) => {
+                    alert(err);
+                });
+            }}>DELETE&lt;/DeleteButton>
+        })
+        return &lt;div key={array[index].id}>
+            &lt;h3 className={'h3-lista'}>{col.name}&lt;/h3>
+            &lt;Stack direction="row">
+                &lt;PartsDataGrid rows={data.get(col.id)} columns={col.columns} sx={{
+                    boxShadow: 2,
+                    border: 2,
+                    borderColor: 'primary.light',
+                }}/>
+                &lt;Stack direction="column" spacing={2.5} sx={{marginTop: "4.31rem"}}>
+                    {isAdmin &amp;&amp; arr}
+                &lt;/Stack>
+            &lt;/Stack>
+
+        &lt;/div>
+    })
+}
+
+/**
+ * Functional component for Parts table
+ * @returns {JSX.Element}
+ * @constructor
+ */
+
+function Parts() {
+    let partsData = useRef(new Map());
+    const [loading, setLoading] = useState(true);
+    const {isLoggedIn, isAdmin} = useAuth();
+    useEffect(() => {
+        if (isLoggedIn) {
+            fetchAndStoreDataInMap(partsTypes)
+                .then((resultMap) => {
+                    partsData.current = resultMap;
+                    setLoading(false);
+                })
+                .catch((error) => {
+                    console.error("Error:", error);
+                });
+        }
+    });
+
+    const tables = createColumns();
+    return &lt;div className="panel">
+        &lt;h2 className={'h2-lista'}>Lista części dostępnych w sklepie X&lt;/h2>
+        {isLoggedIn ? (!loading &amp;&amp; renderTables(tables, partsData.current, isAdmin))
+            :
+            &lt;div className="error">&lt;p>Nie można załadować listy części - proszę się zalogować&lt;/p>&lt;/div>
+        }
+    &lt;/div>
+}
+
+const PartsDataGrid = styled(DataGrid)({
+    background: 'rgba(255, 255, 255, 0.80)',
+    borderRadius: '15px',
+})
+
+export const DeleteButton = styled(Button)({
+    width: 100,
+    height: "1.93rem",
+    color: "white",
+    backgroundColor: "rgb(255, 66, 44)",
+})
+
+
+export default Parts;</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Account.html">Account</a></li><li><a href="AdminPanel.html">AdminPanel</a></li><li><a href="ConfigurationList.html">ConfigurationList</a></li><li><a href="Home.html">Home</a></li><li><a href="Login.html">Login</a></li><li><a href="Navbar.html">Navbar</a></li><li><a href="NewCpu.html">NewCpu</a></li><li><a href="NewGpu.html">NewGpu</a></li><li><a href="NewMemory.html">NewMemory</a></li><li><a href="NewMotherboard.html">NewMotherboard</a></li><li><a href="NewStorage.html">NewStorage</a></li><li><a href="Parts.html">Parts</a></li><li><a href="Register.html">Register</a></li></ul><h3>Global</h3><ul><li><a href="global.html#App">App</a></li><li><a href="global.html#AuthProvider">AuthProvider</a></li><li><a href="global.html#Logout">Logout</a></li><li><a href="global.html#createColumns">createColumns</a></li><li><a href="global.html#deleteConfiguration">deleteConfiguration</a></li><li><a href="global.html#deletePart">deletePart</a></li><li><a href="global.html#deleteToken">deleteToken</a></li><li><a href="global.html#fetchAndStoreDataInMap">fetchAndStoreDataInMap</a></li><li><a href="global.html#fetchConfigurationData">fetchConfigurationData</a></li><li><a href="global.html#fetchDataFromEndpoint">fetchDataFromEndpoint</a></li><li><a href="global.html#postJsonDataToEndpoint">postJsonDataToEndpoint</a></li><li><a href="global.html#postToken">postToken</a></li><li><a href="global.html#renderConfigurations">renderConfigurations</a></li><li><a href="global.html#renderTables">renderTables</a></li><li><a href="global.html#signInSchema">signInSchema</a></li><li><a href="global.html#signUpSchema">signUpSchema</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Sat Aug 26 2023 00:05:16 GMT+0200 (czas środkowoeuropejski letni)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

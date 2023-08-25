@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: components/configuration/ConfigurationList.jsx</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: components/configuration/ConfigurationList.jsx</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import React, {useEffect, useRef, useState} from "react";
+import {deleteConfiguration, fetchConfigurationData} from "../../fetch/fetch";
+import {useAuth} from "../../contexts/AuthContext";
+import "./style.scss";
+import {PartsNames} from "../parts/utils";
+import {DeleteButton, partsArray} from "../parts/Parts";
+import {Delete} from "@mui/icons-material";
+
+
+/**
+ * Helper function for rendering every configuration in a nicely readable manner
+ * @param configs Fetched array of all user's configurations
+ * @returns {*}
+ */
+function renderConfigurations(configs) {
+    return configs.map((config, index) => {
+        return &lt;div>
+            &lt;h3 className="h3-lista">Konfiguracja nr {index + 1}
+                &lt;br>&lt;/br>
+                {config.configurationPrice}zł
+            &lt;/h3>
+            &lt;table className="configuration-table">
+                &lt;thead>
+                &lt;tr className="configuration-table-header">
+                    &lt;th>&lt;/th>
+                    &lt;th>Nazwa&lt;/th>
+                    &lt;th>Dane&lt;/th>
+                    &lt;th>Cena&lt;/th>
+                &lt;/tr>
+                &lt;/thead>
+                &lt;tbody className="configuration-table-body">
+                {partsArray.map((partName, index) => {
+                    return &lt;tr key={index}>
+                        &lt;th>{PartsNames[index]}&lt;/th>
+                        &lt;td>{config[partName.id + "Manufacturer"] + " " + config[partName.id + "Name"]}&lt;/td>
+                        &lt;td>
+                            {partName.columns.map((attribute) => {
+                                let value = config[partName.id + attribute.field.charAt(0).toUpperCase() + attribute.field.slice(1)];
+                                return &lt;table className="configuration-table-inner">
+                                    &lt;tbody>
+                                    &lt;tr>
+                                        &lt;td style={{width: "100%"}}>&lt;b>{attribute.headerName}&lt;/b>
+                                            &lt;br>&lt;/br>
+                                            {typeof value === "boolean" ? (value ? "TAK" : "NIE") : value}
+                                        &lt;/td>
+                                    &lt;/tr>
+                                    &lt;/tbody>
+                                &lt;/table>
+                            })}
+                        &lt;/td>
+                        &lt;td>{config[partName.id + "Price"]}zł&lt;/td>
+                    &lt;/tr>
+                })}
+                &lt;/tbody>
+            &lt;/table>
+            &lt;DeleteButton variant="contained" startIcon={&lt;Delete/>}
+                          onClick={async () => await deleteConfiguration(config.configurationId)
+                              .then(() => {
+                                  window.location.reload(false);
+                              }).catch((err) => {
+
+                              })}>Usuń&lt;/DeleteButton>
+        &lt;/div>
+    })
+}
+
+/**
+ * Functional ConfigurationList component
+ * @returns {JSX.Element}
+ * @constructor
+ */
+function ConfigurationList() {
+    const configList = useRef([]);
+    const [loading, setLoading] = useState(true);
+    const {isLoggedIn, userId} = useAuth();
+    useEffect(() => {
+        if (isLoggedIn) {
+            fetchConfigurationData(userId)
+                .then((json) => {
+                    configList.current = json;
+                    setLoading(false);
+                })
+                .catch((error) => {
+                    console.error("Error:", error);
+                });
+        }
+    })
+
+    return &lt;div className="panel" id="div-config-list">
+        &lt;h2 className="h2-lista">Lista Twoich konfiguracji&lt;/h2>
+        {loading &amp;&amp; &lt;h2>Ładowanie listy konfiguracji&lt;/h2>}
+        {isLoggedIn ? (!loading &amp;&amp; renderConfigurations(configList.current))
+            :
+            &lt;div className="error">&lt;p>Nie można załadować listy części - proszę się zalogować&lt;/p>&lt;/div>
+        }
+    &lt;/div>
+}
+
+export default ConfigurationList;</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Account.html">Account</a></li><li><a href="AdminPanel.html">AdminPanel</a></li><li><a href="ConfigurationList.html">ConfigurationList</a></li><li><a href="Home.html">Home</a></li><li><a href="Login.html">Login</a></li><li><a href="Navbar.html">Navbar</a></li><li><a href="NewCpu.html">NewCpu</a></li><li><a href="NewGpu.html">NewGpu</a></li><li><a href="NewMemory.html">NewMemory</a></li><li><a href="NewMotherboard.html">NewMotherboard</a></li><li><a href="NewStorage.html">NewStorage</a></li><li><a href="Parts.html">Parts</a></li><li><a href="Register.html">Register</a></li></ul><h3>Global</h3><ul><li><a href="global.html#App">App</a></li><li><a href="global.html#AuthProvider">AuthProvider</a></li><li><a href="global.html#Logout">Logout</a></li><li><a href="global.html#createColumns">createColumns</a></li><li><a href="global.html#deleteConfiguration">deleteConfiguration</a></li><li><a href="global.html#deletePart">deletePart</a></li><li><a href="global.html#deleteToken">deleteToken</a></li><li><a href="global.html#fetchAndStoreDataInMap">fetchAndStoreDataInMap</a></li><li><a href="global.html#fetchConfigurationData">fetchConfigurationData</a></li><li><a href="global.html#fetchDataFromEndpoint">fetchDataFromEndpoint</a></li><li><a href="global.html#postJsonDataToEndpoint">postJsonDataToEndpoint</a></li><li><a href="global.html#postToken">postToken</a></li><li><a href="global.html#renderConfigurations">renderConfigurations</a></li><li><a href="global.html#renderTables">renderTables</a></li><li><a href="global.html#signInSchema">signInSchema</a></li><li><a href="global.html#signUpSchema">signUpSchema</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Sat Aug 26 2023 00:05:16 GMT+0200 (czas środkowoeuropejski letni)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

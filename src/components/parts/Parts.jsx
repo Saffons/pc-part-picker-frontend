@@ -25,7 +25,7 @@ export const partsArray = [
 
 /**
  * Function that creates table columns that are needed for the DataGrid component
- * @returns {*[]} object with columns and their properties
+ * @returns object with columns and their properties
  */
 export const createColumns = () => {
     const arr = [];

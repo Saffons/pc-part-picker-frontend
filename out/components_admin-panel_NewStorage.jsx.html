@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: components/admin-panel/NewStorage.jsx</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: components/admin-panel/NewStorage.jsx</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import {postJsonDataToEndpoint} from "../../fetch/fetch";
+import {ErrorMessage, Field, Form, Formik} from "formik";
+import {Button, Divider, Stack} from "@mui/material";
+import {Add} from "@mui/icons-material";
+import React from "react";
+import {memorySchema, MemoryValues} from "./utils";
+
+/**
+ * Functional NewStorage component
+ * @returns {JSX.Element}
+ * @constructor
+ */
+function NewStorage() {
+    /**
+     * Handler for sending form values
+     * @param values
+     */
+    const handleSubmit = (values) => {
+        postJsonDataToEndpoint("parts/storage", values)
+            .then(() => {
+                window.location.reload(false);
+            });
+    }
+
+    return (
+        &lt;Formik
+            initialValues={MemoryValues}
+            validationSchema={memorySchema}
+            onSubmit={(values) => {
+                handleSubmit(values);
+            }}
+        >
+            {(formik) => {
+                const {errors, touched} = formik;
+                return (
+                    &lt;div className="panel">
+                        &lt;div className="form-control">
+                            &lt;Form>
+                                &lt;Stack
+                                    direction="column"
+                                    divider={&lt;Divider orientation="horizontal" flexItem/>}
+                                    spacing={2}
+                                >
+
+                                    &lt;label htmlFor="name">Nazwa: &lt;/label>
+                                    &lt;Field
+                                        type="text"
+                                        name="name"
+                                        id="name"
+                                        className={errors.name &amp;&amp; touched.name ?
+                                            "input-error" : null}
+                                    />
+                                    &lt;ErrorMessage name="name" component="span" className="error"/>
+
+                                    &lt;label htmlFor="manufacturer">Producent: &lt;/label>
+                                    &lt;Field
+                                        type="text"
+                                        name="manufacturer"
+                                        id="manufacturer"
+                                        className={errors.manufacturer &amp;&amp; touched.manufacturer ?
+                                            "input-error" : null}
+                                    />
+                                    &lt;ErrorMessage name="manufacturer" component="span" className="error"/>
+
+                                    &lt;label htmlFor="price">Cena: &lt;/label>
+                                    &lt;Field
+                                        type="number"
+                                        name="price"
+                                        id="price"
+                                        className={errors.price &amp;&amp; touched.price ?
+                                            "input-error" : null}
+                                    />
+                                    &lt;ErrorMessage name="price" component="span" className="error"/>
+
+                                    &lt;label htmlFor="m2">M2: &lt;/label>
+                                    &lt;Field
+                                        type="checkbox"
+                                        name="m2"
+                                        id="m2"
+                                        className={errors.m2 &amp;&amp; touched.m2 ?
+                                            "input-error" : null}
+                                    />
+                                    &lt;ErrorMessage name="m2" component="span" className="error"/>
+
+                                    &lt;label htmlFor="capacity">Pojemność dysku (MB): &lt;/label>
+                                    &lt;Field
+                                        type="number"
+                                        name="capacity"
+                                        id="capacity"
+                                        className={errors.capacity &amp;&amp; touched.capacity ?
+                                            "input-error" : null}
+                                    />
+                                    &lt;ErrorMessage name="capacity" component="span" className="error"/>
+
+                                    &lt;label htmlFor="speed">Prędkość odczytu (MB/s): &lt;/label>
+                                    &lt;Field
+                                        type="number"
+                                        name="speed"
+                                        id="speed"
+                                        className={errors.speed &amp;&amp; touched.speed ?
+                                            "input-error" : null}
+                                    />
+                                    &lt;ErrorMessage name="speed" component="span" className="error"/>
+                                &lt;/Stack>
+
+                                &lt;Button variant="contained" size="medium" startIcon={&lt;Add/>}
+                                        type="submit"
+                                        sx={{margin: "1rem"}}>Dodaj część&lt;/Button>
+
+                            &lt;/Form>
+                        &lt;/div>
+                    &lt;/div>
+                )
+            }}
+        &lt;/Formik>
+    );
+}
+
+export default NewStorage;</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Account.html">Account</a></li><li><a href="AdminPanel.html">AdminPanel</a></li><li><a href="ConfigurationList.html">ConfigurationList</a></li><li><a href="Home.html">Home</a></li><li><a href="Login.html">Login</a></li><li><a href="Navbar.html">Navbar</a></li><li><a href="NewCpu.html">NewCpu</a></li><li><a href="NewGpu.html">NewGpu</a></li><li><a href="NewMemory.html">NewMemory</a></li><li><a href="NewMotherboard.html">NewMotherboard</a></li><li><a href="NewStorage.html">NewStorage</a></li><li><a href="Parts.html">Parts</a></li><li><a href="Register.html">Register</a></li></ul><h3>Global</h3><ul><li><a href="global.html#App">App</a></li><li><a href="global.html#AuthProvider">AuthProvider</a></li><li><a href="global.html#Logout">Logout</a></li><li><a href="global.html#createColumns">createColumns</a></li><li><a href="global.html#deleteConfiguration">deleteConfiguration</a></li><li><a href="global.html#deletePart">deletePart</a></li><li><a href="global.html#deleteToken">deleteToken</a></li><li><a href="global.html#fetchAndStoreDataInMap">fetchAndStoreDataInMap</a></li><li><a href="global.html#fetchConfigurationData">fetchConfigurationData</a></li><li><a href="global.html#fetchDataFromEndpoint">fetchDataFromEndpoint</a></li><li><a href="global.html#postJsonDataToEndpoint">postJsonDataToEndpoint</a></li><li><a href="global.html#postToken">postToken</a></li><li><a href="global.html#renderConfigurations">renderConfigurations</a></li><li><a href="global.html#renderTables">renderTables</a></li><li><a href="global.html#signInSchema">signInSchema</a></li><li><a href="global.html#signUpSchema">signUpSchema</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Sat Aug 26 2023 00:05:16 GMT+0200 (czas środkowoeuropejski letni)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
