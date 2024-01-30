@@ -5,6 +5,7 @@ import "./style.scss";
 import {PartsNames} from "../parts/utils";
 import {DeleteButton, partsArray} from "../parts/Parts";
 import {Delete} from "@mui/icons-material";
+import {useNavigate} from "react-router-dom";
 
 
 /**
@@ -12,7 +13,7 @@ import {Delete} from "@mui/icons-material";
  * @param configs Fetched array of all user's configurations
  * @returns {*}
  */
-function renderConfigurations(configs) {
+function renderConfigurations(configs, nav) {
     return configs.map((config, index) => {
         return <div>
             <h3 className="h3-lista">Konfiguracja nr {index + 1}
@@ -56,7 +57,7 @@ function renderConfigurations(configs) {
             <DeleteButton variant="contained" startIcon={<Delete/>}
                           onClick={async () => await deleteConfiguration(config.configurationId)
                               .then(() => {
-                                  window.location.reload(false);
+                                  nav("/configs");
                               }).catch((err) => {
 
                               })}>Usuń</DeleteButton>
@@ -73,6 +74,7 @@ function ConfigurationList() {
     const configList = useRef([]);
     const [loading, setLoading] = useState(true);
     const {isLoggedIn, userId} = useAuth();
+    const navigate = useNavigate();
     useEffect(() => {
         if (isLoggedIn) {
             fetchConfigurationData(userId)
@@ -89,7 +91,7 @@ function ConfigurationList() {
     return <div className="panel" id="div-config-list">
         <h2 className="h2-lista">Lista Twoich konfiguracji</h2>
         {loading && <h2>Ładowanie listy konfiguracji</h2>}
-        {isLoggedIn ? (!loading && renderConfigurations(configList.current))
+        {isLoggedIn ? (!loading && renderConfigurations(configList.current, navigate))
             :
             <div className="error"><p>Nie można załadować listy części - proszę się zalogować</p></div>
         }

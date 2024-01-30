@@ -14,6 +14,7 @@ import React, {useEffect, useRef, useState} from "react";
 import {useAuth} from "../../contexts/AuthContext";
 import {Button, Stack} from "@mui/material";
 import {Delete} from "@mui/icons-material";
+import {useNavigate} from "react-router-dom";
 
 export const partsArray = [
     {id: "cpu", name: "Procesory", columns: CPUColumns},
@@ -44,12 +45,13 @@ export const createColumns = () => {
  * @param isAdmin Boolean
  * @returns {*} JSX element with the table
  */
-function renderTables(array, data, isAdmin) {
+function renderTables(array, data, isAdmin, nav) {
+
     return array.map((col, index) => {
         let arr = data.get(array[index].id).map((el) => {
             return <DeleteButton variant="contained" startIcon={<Delete/>} onClick={async () => {
                 await deletePart(array[index].id, el.id).then(() => {
-                    window.location.reload(false);
+                    nav("/parts");
                 }).catch((err) => {
                     alert(err);
                 });
@@ -82,6 +84,7 @@ function Parts() {
     let partsData = useRef(new Map());
     const [loading, setLoading] = useState(true);
     const {isLoggedIn, isAdmin} = useAuth();
+    const navigate = useNavigate();
     useEffect(() => {
         if (isLoggedIn) {
             fetchAndStoreDataInMap(partsTypes)
@@ -98,7 +101,7 @@ function Parts() {
     const tables = createColumns();
     return <div className="panel">
         <h2 className={'h2-lista'}>Lista części dostępnych w sklepie X</h2>
-        {isLoggedIn ? (!loading && renderTables(tables, partsData.current, isAdmin))
+        {isLoggedIn ? (!loading && renderTables(tables, partsData.current, isAdmin, navigate))
             :
             <div className="error"><p>Nie można załadować listy części - proszę się zalogować</p></div>
         }
