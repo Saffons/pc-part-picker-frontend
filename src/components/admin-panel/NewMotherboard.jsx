@@ -4,6 +4,7 @@ import {Button, Divider, Stack} from "@mui/material";
 import {Add} from "@mui/icons-material";
 import React from "react";
 import {chipsetSocketArray, motherboardSchema, MotherboardValues} from "./utils";
+import {useNavigate} from "react-router-dom";
 
 /**
  * Functional NewMotherboard component
@@ -13,6 +14,7 @@ import {chipsetSocketArray, motherboardSchema, MotherboardValues} from "./utils"
 function NewMotherboard() {
     let socketArr = []
     let memoryArr = []
+    const navigate = useNavigate();
     /**
      * Handler for sending form values
      * @param values
@@ -20,7 +22,7 @@ function NewMotherboard() {
     const handleSubmit = (values) => {
         postJsonDataToEndpoint("parts/motherboard", values)
             .then(() => {
-                window.location.reload(false);
+                navigate("/admin");
             });
     }
 

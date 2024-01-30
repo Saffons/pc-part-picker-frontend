@@ -4,6 +4,7 @@ import {Button, Divider, Stack} from "@mui/material";
 import {Add} from "@mui/icons-material";
 import React from "react";
 import {gpuSchema, GpuValues} from "./utils";
+import {useNavigate} from "react-router-dom";
 
 /**
  * Functional NewGpu component
@@ -11,6 +12,7 @@ import {gpuSchema, GpuValues} from "./utils";
  * @constructor
  */
 function NewGpu() {
+    const navigate = useNavigate();
     /**
      * Handler for sending form values
      * @param values
@@ -18,7 +20,7 @@ function NewGpu() {
     const handleSubmit = (values) => {
         postJsonDataToEndpoint("parts/gpu", values)
             .then(() => {
-                window.location.reload(false);
+                navigate("/admin");
             });
     }
 

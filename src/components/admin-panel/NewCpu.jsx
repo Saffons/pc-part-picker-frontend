@@ -4,6 +4,7 @@ import {Button, Divider, Stack} from "@mui/material";
 import {Add} from "@mui/icons-material";
 import React from "react";
 import {cpuSchema, CpuValues} from "./utils";
+import {useNavigate} from "react-router-dom";
 
 /**
  * Functional NewCpu component
@@ -12,6 +13,7 @@ import {cpuSchema, CpuValues} from "./utils";
  */
 function NewCpu() {
     let socketArr = []
+    const navigate = useNavigate();
     /**
      * Handler for sending form values
      * @param values
@@ -19,7 +21,7 @@ function NewCpu() {
     const handleSubmit = (values) => {
         postJsonDataToEndpoint("parts/cpu", values)
             .then(() => {
-                window.location.reload(false);
+                navigate("/admin");
             });
     }
     for (const item of cpuSchema.fields.socket._whitelist) {

@@ -4,6 +4,7 @@ import {Button, Divider, Stack} from "@mui/material";
 import {Add} from "@mui/icons-material";
 import React from "react";
 import {memorySchema, MemoryValues} from "./utils";
+import {useNavigate} from "react-router-dom";
 
 /**
  * Functional NewStorage component
@@ -11,6 +12,7 @@ import {memorySchema, MemoryValues} from "./utils";
  * @constructor
  */
 function NewStorage() {
+    const navigate = useNavigate();
     /**
      * Handler for sending form values
      * @param values
@@ -18,7 +20,7 @@ function NewStorage() {
     const handleSubmit = (values) => {
         postJsonDataToEndpoint("parts/storage", values)
             .then(() => {
-                window.location.reload(false);
+                navigate("/admin");
             });
     }
 
